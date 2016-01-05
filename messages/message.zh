@@ -1,0 +1,13 @@
+# Default values for chinese
+password=密码
+username=账户
+remember=记忆
+registernew=注册新用户
+login=登录
+failed=失败
+successed=成功
+
+
+[CN]
+
+
