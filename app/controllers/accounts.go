@@ -26,3 +26,7 @@ func (c Accounts) Index() revel.Result {
 
 	return c.Render(accounts)
 }
+
+func (c Accounts) Add() revel.Result {
+	return c.Render()
+}
