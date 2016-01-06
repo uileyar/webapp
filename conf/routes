@@ -11,6 +11,8 @@ POST	/register			        Application.SaveUser
 POST	/login			            Application.Login
 GET  	/logout		     	        Application.Logout
 GET     /accounts                   Accounts.Index
+GET     /bills                   Bills.Index
+GET     /catelogs                   Catelogs.Index
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath           Static.Serve("public")

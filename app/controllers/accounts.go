@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
 )
@@ -20,6 +21,7 @@ func (c Accounts) Index() revel.Result {
 	for _, r := range results {
 		b := r.(*models.Account)
 		accounts = append(accounts, b)
+		glog.Infof("%v\n", b)
 	}
 
 	return c.Render(accounts)

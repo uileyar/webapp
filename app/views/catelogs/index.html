@@ -1,0 +1,35 @@
+{{set . "title" "Search"}}
+{{template "header.html" .}}
+
+<h1>Catelogs</h1>
+
+{{if not .catelogs}}
+<p>
+  No Found
+</p>
+{{else}}
+<table>
+  <thead>
+    <tr>
+      <th>Catelog_id</th>
+      <th>Name</th>
+      <th>Kind</th>
+      <th>Sort</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .catelogs}}
+    <tr>
+      <td>{{.Catelog_id}}</td>
+      <td>{{.Name}}</td>
+      <td>{{.Kind}}</td>
+      <td>{{.Sort}}</td>
+      <td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{end}}
+
+{{template "footer.html" .}}

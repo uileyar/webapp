@@ -1,8 +1,7 @@
 package controllers
 
 import (
-	"fmt"
-
+	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
 	"github.com/uileyar/webapp/app/routes"
@@ -42,9 +41,10 @@ func (c Application) getUser(username string) *models.User {
 }
 
 func (c Application) Index() revel.Result {
-	fmt.Println("Index in")
+	glog.Infoln("Index in")
+
 	if c.connected() != nil {
-		return c.Redirect(routes.Accounts.Index())
+		return c.Redirect(routes.Catelogs.Index())
 	}
 	c.Flash.Error("Please log in first")
 	return c.Render()

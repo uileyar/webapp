@@ -79,13 +79,9 @@
 <table>
   <thead>
     <tr>
+      <th>Account_id</th>
       <th>Name</th>
-      <th>Address</th>
-      <th>City, State</th>
-      <th>Check in</th>
-      <th>Check out</th>
-      <th>Confirmation number</th>
-      <th>Action</th>
+      <th>Version</th>
     </tr>
   </thead>
   <tbody>
@@ -93,7 +89,7 @@
     <tr>
       <td>{{.Account_id}}</td>
       <td>{{.Name}}</td>
-      <td>{{.Version.Format "2006-01-02 15:04:05.000"}}</td>
+      <td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
     </tr>
     {{end}}
   </tbody>

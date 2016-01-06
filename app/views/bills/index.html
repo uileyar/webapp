@@ -1,0 +1,45 @@
+{{set . "title" "Search"}}
+{{template "header.html" .}}
+
+<h1>Bills</h1>
+
+{{if not .bills}}
+<p>
+  No Found
+</p>
+{{else}}
+<table>
+  <thead>
+    <tr>
+      <th>Bill_id</th>
+      <th>Amount</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Date</th>
+      <th>Month</th>
+      <th>Catelog_id</th>
+      <th>Account_id</th>
+      <th>Kind</th>
+      <th>Version</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .bills}}
+    <tr>
+      <td>{{.Bill_id}}</td>
+      <td>{{.Amount}}</td>
+      <td>{{.Title}}</td>
+      <td>{{.Description}}</td>
+      <td>{{.Date.Format "2006-01-02"}}</td>
+      <td>{{.Month}}</td>
+      <td>{{.Catelog_id}}</td>
+      <td>{{.Account_id}}</td>
+      <td>{{.Kind}}</td>
+      <td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+{{end}}
+
+{{template "footer.html" .}}

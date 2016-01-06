@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/go-gorp/gorp"
+	"github.com/golang/glog"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/revel/modules/db/app"
 	r "github.com/revel/revel"
@@ -13,16 +13,19 @@ import (
 )
 
 var (
-	Dbm *gorp.DbMap
+	Dbm       *gorp.DbMap
+	GLogLevel glog.Level = 3 //set glog V level
 )
 
 func InitDB() {
-	fmt.Println("InitDB in")
+	glog.Infoln("InitDB in")
 	db.Init()
 	Dbm = &gorp.DbMap{Db: db.Db, Dialect: gorp.SqliteDialect{}}
 
 	t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
 	t.ColMap("Password").Transient = true
+
+	//t = Dbm.AddTable(models.Account{})
 
 	Dbm.TraceOn("[gorp]", r.INFO)
 
@@ -33,7 +36,7 @@ func InitDB() {
 }
 
 func insertDemoData() {
-	fmt.Println("insertDemoData in")
+	glog.V(GLogLevel).Infoln("insertDemoData in")
 
 	bcryptPassword, _ := bcrypt.GenerateFromPassword(
 		[]byte("demo"), bcrypt.DefaultCost)
@@ -42,7 +45,7 @@ func insertDemoData() {
 		panic(err)
 	}
 
-	fmt.Println("insertDemoData out")
+	glog.V(GLogLevel).Infoln("insertDemoData out")
 }
 
 type GorpController struct {
@@ -51,19 +54,19 @@ type GorpController struct {
 }
 
 func (c *GorpController) Begin() r.Result {
-	fmt.Println("Begin in")
+	glog.V(GLogLevel).Infoln("Begin in")
 
 	txn, err := Dbm.Begin()
 	if err != nil {
 		panic(err)
 	}
 	c.Txn = txn
-	fmt.Println("Begin out")
+	glog.V(GLogLevel).Infoln("Begin out")
 	return nil
 }
 
 func (c *GorpController) Commit() r.Result {
-	fmt.Println("Commit in")
+	glog.V(GLogLevel).Infoln("Commit in")
 	if c.Txn == nil {
 		return nil
 	}
@@ -71,12 +74,12 @@ func (c *GorpController) Commit() r.Result {
 		panic(err)
 	}
 	c.Txn = nil
-	fmt.Println("Commit out")
+	glog.V(GLogLevel).Infoln("Commit out")
 	return nil
 }
 
 func (c *GorpController) Rollback() r.Result {
-	fmt.Println("Rollback in")
+	glog.V(GLogLevel).Infoln("Rollback in")
 	if c.Txn == nil {
 		return nil
 	}
@@ -84,6 +87,6 @@ func (c *GorpController) Rollback() r.Result {
 		panic(err)
 	}
 	c.Txn = nil
-	fmt.Println("Rollback out")
+	glog.V(GLogLevel).Infoln("Rollback out")
 	return nil
 }
