@@ -30,3 +30,7 @@ func (c Accounts) Index() revel.Result {
 func (c Accounts) Add() revel.Result {
 	return c.Render()
 }
+
+func (c Accounts) SaveAccount() revel.Result {
+	return c.Redirect(c.Index())
+}

@@ -1,12 +1,21 @@
 # Default values for chinese
 password=密码
 username=账户
-remember=记忆
+remember=记住我
 registernew=注册新用户
 login=登录
 failed=失败
 successed=成功
-
+add=新建
+income=收入
+expense=支出
+balance=余额
+name=名称
+kind=类型
+amount=金额
+version=更新时间
+account=账户
+ok=确定
 
 [CN]
 
