@@ -27,19 +27,38 @@ type Account struct {
 	Kind        string `db:", size:10"`
 	Amount      float32
 	Description string `db:", size:200"`
-	Sort        int    `db:", size:200"`
-	Version     time.Time
+	Sort        int
+	Version     time.Time `db:", default:CURRENT_TIMESTAMP"`
+	Income      float32   `db:"-"`
+	Expense     float32   `db:"-"`
+	Balance     float32   `db:"-"`
 }
 
 func (u Account) String() string {
 	return fmt.Sprintf("Account(%#v)", u)
 }
 
+func (u *Account) PostGet(s gorp.SqlExecutor) error {
+	var val float32
+	if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE account_id = ? and kind = 'income'`, u.Account_id); err == nil {
+		u.Income = val
+	}
+
+	if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE account_id = ? and kind = 'expense'`, u.Account_id); err == nil {
+		u.Expense = val
+	}
+
+	if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE account_id = ?`, u.Account_id); err == nil {
+		u.Balance = val
+	}
+
+	return nil
+}
+
 func (u *Account) PreInsert(s gorp.SqlExecutor) error {
 	u.Account_id = CreateGUID()
-	u.Version = time.Now()
 	var val int
-	if err := s.SelectOne(&val, "select max(sort) from jzb_account"); err == nil {
+	if err := s.SelectOne(&val, "select max(sort) from jzb_accounts"); err == nil {
 		u.Sort = val + 1
 	}
 
@@ -47,6 +66,6 @@ func (u *Account) PreInsert(s gorp.SqlExecutor) error {
 }
 
 func (u *Account) PreUpdate(s gorp.SqlExecutor) error {
-	u.Version = time.Now()
+
 	return nil
 }

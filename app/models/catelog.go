@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"time"
+
+	"github.com/go-gorp/gorp"
 )
 
 /*
@@ -22,10 +24,45 @@ type Catelog struct {
 	User_id    int
 	Name       string `db:", size:10"`
 	Kind       string `db:", size:10"`
-	Sort       int    `db:",  default:0"`
-	Version    time.Time
+	Sort       int
+	Version    time.Time `db:", default:CURRENT_TIMESTAMP"`
+	Balance    float32   `db:"-"`
+	Number     int       `db:"-"`
+	Percent    float32   `db:"-"`
 }
 
 func (u *Catelog) String() string {
-	return fmt.Sprintf("Catelog(%v)", u.Name)
+	return fmt.Sprintf("Catelog(%#v)", u.Name)
+}
+
+func (u *Catelog) PostGet(s gorp.SqlExecutor) error {
+	var val float32
+	if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE catelog_id = ?`, u.Catelog_id); err == nil {
+		u.Balance = val
+	}
+
+	var number int
+	if err := s.SelectOne(&number, `SELECT count(amount) from jzb_bills WHERE catelog_id = ?`, u.Catelog_id); err == nil {
+		u.Number = number
+	}
+
+	if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE kind = ?`, u.Kind); err == nil {
+		u.Percent = u.Balance / val * 100
+	}
+	return nil
+}
+
+func (u *Catelog) PreInsert(s gorp.SqlExecutor) error {
+	u.Catelog_id = CreateGUID()
+	var val int
+	if err := s.SelectOne(&val, "select max(sort) from jzb_catelogs"); err == nil {
+		u.Sort = val + 1
+	}
+
+	return nil
+}
+
+func (u *Catelog) PreUpdate(s gorp.SqlExecutor) error {
+
+	return nil
 }

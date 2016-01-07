@@ -28,15 +28,21 @@ func (c Accounts) Index() revel.Result {
 }
 
 func (c Accounts) Add() revel.Result {
-	_, err := c.Txn.Exec(`INSERT INTO jzb_accounts (account_id, name, kind,amount) VALUES ('Wilson','Wilson', 'cash',0)`)
-	if err != nil {
-		glog.Errorln(err)
-		panic(err)
-	}
-
 	return c.Render()
 }
 
 func (c Accounts) SaveAccount() revel.Result {
+	name := "test1"
+	kind := "cash"
+
+	account := &models.Account{
+		Name: name,
+		Kind: kind,
+	}
+
+	err := c.Txn.Insert(account)
+	if err != nil {
+		panic(err)
+	}
 	return c.Redirect(c.Index())
 }

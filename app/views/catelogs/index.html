@@ -1,31 +1,31 @@
-{{set . "title" "Search"}}
+{{set . "title" "catelogs"}}
 {{template "header.html" .}}
 
-<h1>Catelogs</h1>
+<div class="page-header">
+  <h1>{{msg . "catelog"}}</h1>
+</div>
 
 {{if not .catelogs}}
 <p>
   No Found
 </p>
 {{else}}
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Catelog_id</th>
-      <th>Name</th>
-      <th>Kind</th>
-      <th>Sort</th>
-      <th>Version</th>
+      <th>{{msg . "name"}}</th>
+      <th>{{msg . "number"}}</th>
+      <th>{{msg . "balance"}}</th>
+      <th>{{msg . "percent"}}</th>
     </tr>
   </thead>
   <tbody>
     {{range .catelogs}}
     <tr>
-      <td>{{.Catelog_id}}</td>
       <td>{{.Name}}</td>
-      <td>{{.Kind}}</td>
-      <td>{{.Sort}}</td>
-      <td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
+	  <td>{{.Number}}</td>
+      <td>{{.Balance}}</td>
+      <td>{{.Percent}}%</td>
     </tr>
     {{end}}
   </tbody>

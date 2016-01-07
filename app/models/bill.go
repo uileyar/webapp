@@ -37,17 +37,17 @@ type Bill struct {
 	Description          string `db:", size:1000"`
 	Date                 time.Time
 	Month                int
-	Catelog_id           string `db:", size:36"`
-	Server_category_id   int    `db:"-"`
-	Account_id           string `db:", size:36"`
-	Server_account_id    int    `db:"-"`
-	To_account_id        string `db:", size:36"`
-	Server_to_account_id int    `db:"-"`
-	Borrower_id          string `db:", size:36"`
-	Server_borrower_id   int    `db:"-"`
-	Kind                 string `db:", size:10"`
-	Shared               string `db:", size:10`
-	Version              time.Time
+	Catelog_id           string    `db:", size:36"`
+	Server_category_id   int       `db:"-"`
+	Account_id           string    `db:", size:36"`
+	Server_account_id    int       `db:"-"`
+	To_account_id        string    `db:", size:36"`
+	Server_to_account_id int       `db:"-"`
+	Borrower_id          string    `db:", size:36"`
+	Server_borrower_id   int       `db:"-"`
+	Kind                 string    `db:", size:10"`
+	Shared               string    `db:", size:10`
+	Version              time.Time `db:", default:CURRENT_TIMESTAMP"`
 }
 
 func (u *Bill) String() string {

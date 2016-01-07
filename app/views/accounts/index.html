@@ -19,22 +19,30 @@
   <thead>
     <tr>
       <th>{{msg . "account"}}{{msg . "name"}}</th>
+	<!-->
       <th>{{msg . "account"}}{{msg . "kind"}}</th>
+	<!-->
       <th>{{msg . "account"}}{{msg . "income"}}</th>
       <th>{{msg . "account"}}{{msg . "expense"}}</th>
-      <th>{{msg . "account"}}{{msg . "balance"}}</th>	
+      <th>{{msg . "account"}}{{msg . "balance"}}</th>
+	<!-->	
 	  <th>{{msg . "account"}}{{msg . "version"}}</th>
+	<!-->
     </tr>
   </thead>
   <tbody>
     {{range .accounts}}
     <tr>
       <td>{{.Name}}</td>
+	<!-->
 	  <td>{{.Kind}}</td>
-	  <td>0</td>
-	  <td>0</td>
-	  <td>0</td>
+	<!-->
+	  <td>{{.Income}}</td>
+	  <td>{{.Expense}}</td>
+	  <td>{{.Balance}}</td>
+	<!-->
       <td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
+	<!-->
     </tr>
     {{end}}
   </tbody>

@@ -26,3 +26,23 @@ func (c Catelogs) Index() revel.Result {
 
 	return c.Render(catelogs)
 }
+
+func (c Catelogs) Add() revel.Result {
+	return c.Render()
+}
+
+func (c Catelogs) SaveCatelog() revel.Result {
+	name := "test1"
+	kind := "income"
+
+	saveData := &models.Catelog{
+		Name: name,
+		Kind: kind,
+	}
+
+	err := c.Txn.Insert(saveData)
+	if err != nil {
+		panic(err)
+	}
+	return c.Redirect(c.Index())
+}

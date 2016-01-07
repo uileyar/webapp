@@ -25,7 +25,9 @@ func InitDB() {
 	t := Dbm.AddTable(models.User{}).SetKeys(true, "UserId")
 	t.ColMap("Password").Transient = true
 
-	t = Dbm.AddTable(models.Account{})
+	Dbm.AddTableWithName(models.Account{}, "jzb_accounts")
+	Dbm.AddTableWithName(models.Bill{}, "jzb_bills")
+	Dbm.AddTableWithName(models.Catelog{}, "jzb_catelogs")
 
 	Dbm.TraceOn("[gorp]", r.INFO)
 
