@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"time"
+
+	"github.com/go-gorp/gorp"
 )
 
 /*
@@ -25,10 +27,26 @@ type Account struct {
 	Kind        string `db:", size:10"`
 	Amount      float32
 	Description string `db:", size:200"`
-	Sort        int    `db:", size:200, default:0"`
+	Sort        int    `db:", size:200"`
 	Version     time.Time
 }
 
-func (u *Account) String() string {
-	return fmt.Sprintf("Account(%v)", u.Name)
+func (u Account) String() string {
+	return fmt.Sprintf("Account(%#v)", u)
+}
+
+func (u *Account) PreInsert(s gorp.SqlExecutor) error {
+	u.Account_id = CreateGUID()
+	u.Version = time.Now()
+	var val int
+	if err := s.SelectOne(&val, "select max(sort) from jzb_account"); err == nil {
+		u.Sort = val + 1
+	}
+
+	return nil
+}
+
+func (u *Account) PreUpdate(s gorp.SqlExecutor) error {
+	u.Version = time.Now()
+	return nil
 }
