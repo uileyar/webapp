@@ -11,7 +11,8 @@ POST	/register			        Application.SaveUser
 POST	/login			            Application.Login
 GET  	/logout		     	        Application.Logout
 GET     /accounts                   Accounts.Index
-#POST    /accounts/add                     Accounts.ConfirmBooking
+GET    /accounts/new                     Accounts.New
+POST    /accounts/new                     Accounts.SaveAccount
 
 GET     /bills                   Bills.Index
 GET     /catelogs                   Catelogs.Index

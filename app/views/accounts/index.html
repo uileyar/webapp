@@ -7,7 +7,7 @@
 </div>
 
 <p>
- <button type="button" class="btn btn-primary" onclick="javascript:location.href={{url "Accounts.Add"}}">{{msg . "add"}}</button>
+ <button type="button" class="btn btn-primary" onclick="javascript:location.href={{url "Accounts.New"}}">{{msg . "add"}}</button>
 </p>
 
 {{if not .accounts}}
@@ -19,9 +19,6 @@
   <thead>
     <tr>
       <th>{{msg . "account"}}{{msg . "name"}}</th>
-	<!-->
-      <th>{{msg . "account"}}{{msg . "kind"}}</th>
-	<!-->
       <th>{{msg . "account"}}{{msg . "income"}}</th>
       <th>{{msg . "account"}}{{msg . "expense"}}</th>
       <th>{{msg . "account"}}{{msg . "balance"}}</th>
@@ -33,15 +30,12 @@
   <tbody>
     {{range .accounts}}
     <tr>
-      <td>{{.Name}}</td>
-	<!-->
-	  <td>{{.Kind}}</td>
-	<!-->
-	  <td>{{.Income}}</td>
+      	<td>{{.Name}}</td>
+	<td>{{.Income}}</td>
 	  <td>{{.Expense}}</td>
 	  <td>{{.Balance}}</td>
 	<!-->
-      <td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
+      	<td>{{.Version.Format "2006-01-02 15:04:05"}}</td>
 	<!-->
     </tr>
     {{end}}

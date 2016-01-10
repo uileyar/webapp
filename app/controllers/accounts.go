@@ -4,6 +4,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
+	"github.com/uileyar/webapp/app/routes"
 )
 
 type Accounts struct {
@@ -21,20 +22,20 @@ func (c Accounts) Index() revel.Result {
 	for _, r := range results {
 		b := r.(*models.Account)
 		accounts = append(accounts, b)
-		glog.Infof("%v\n", b)
+		glog.Infof("%v\n", b.Name)
 	}
 
 	return c.Render(accounts)
 }
 
-func (c Accounts) Add() revel.Result {
+func (c Accounts) New() revel.Result {
 	return c.Render()
 }
 
 func (c Accounts) SaveAccount() revel.Result {
-	name := "test1"
+	name := c.Params.Get("name")
 	kind := "cash"
-
+	glog.Infof("new name = %v", name)
 	account := &models.Account{
 		Name: name,
 		Kind: kind,
@@ -44,5 +45,5 @@ func (c Accounts) SaveAccount() revel.Result {
 	if err != nil {
 		panic(err)
 	}
-	return c.Redirect(c.Index())
+	return c.Redirect(routes.Accounts.Index())
 }

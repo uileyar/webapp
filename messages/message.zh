@@ -1,7 +1,7 @@
 # Default values for chinese
 password=密码
 username=账户
-remember=记住我
+remember=记住登录状态
 registernew=注册新用户
 login=登录
 failed=失败

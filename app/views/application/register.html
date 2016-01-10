@@ -6,7 +6,7 @@
 <form action="{{url "Application.SaveUser"}}" method="POST">
   {{with $field := field "user.Username" .}}
     <p class="{{$field.ErrorClass}}">
-      <strong>{{msg . "username"}}:</strong>
+      <strong>username:</strong>
       <input type="text" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"> *
       <span class="error">{{$field.Error}}</span>
     </p>
@@ -19,7 +19,7 @@
   {{end}}
   {{with $field := field "user.Password" .}}
     <p class="{{$field.ErrorClass}}">
-      <strong>{{msg . "password"}}:</strong> <input type="password" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"> *
+      <strong>password:</strong> <input type="password" name="{{$field.Name}}" size="16" value="{{$field.Flash}}"> *
       <span class="error">{{$field.Error}}</span>
     </p>
   {{end}}
@@ -30,7 +30,8 @@
     </p>
   {{end}}
   <p class="buttons">
-    <input type="submit" value="Register"> <a href="{{url "Application.Index"}}">Cancel</a>
+    <input type="submit" value="Register">
+    <a href="{{url "Application.Index"}}">Cancel</a>
   </p>
 </form>
 
