@@ -1,49 +1,42 @@
 {{set . "title" "Home"}}
 {{template "header.html" .}}
 
-<div id="login">
+<div class="page-header">
+  <h2>{{msg . "login"}}</h2>
+</div>
 
-  (try with demo/demo)
+<div class="container">
+  <div class="row">
+    <div class="span6">{{template "flash.html" .}}</div>
+  </div>
+</div>
 
-  <form action="{{url "Application.Login"}}" id="formLogin" method="POST">
-    <p class="field">
-      <label>{{msg . "username"}}:</label>
-      <input type="text" name="username1" size="19" value="{{.flash.username}}" />
-    </p>
-    <p class="field">
-      <label>{{msg . "password"}}:</label>
-      <input type="password" name="password"  size="19"/>
-    </p>
-    <p class="field">
-      <label>{{msg . "remember"}}:</label>
-      <input type="checkbox" name="remember" value="true"/>
-    </p>
-    <p class="buttons">
-      <input type="submit" value={{msg . "login"}} />
-    </p>
+<div class="container">
+
+  <form class="form-signin" action="{{url "Application.Login"}}" id="formLogin" method="POST">
+    <div class="form-group">
+      <label for="inputName" class="col-sm-2 control-label">{{msg . "username"}}</label>
+      <div class="col-sm-10">
+        <input type="text" id="inputName" size="19" name ="username" value="{{.flash.username}}" class="form-control" maxlength="10" placeholder={{msg . "username"}} required autofocus></div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword" class="col-sm-2 control-label">{{msg . "password"}}</label>
+      <div class="col-sm-10">
+        <input type="password" id="inputPassword" size="19" name="password" class="form-control" placeholder="Password" required></div>
+    </div>
+    <div class="checkbox col-sm-10">
+      <label>
+        <input type="checkbox" name="remember" value="false">{{msg . "remember"}}</label>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-4">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{{msg . "login"}}</button>
+      </div>
+    </div>
   </form>
-
   <p>
     <a href="{{url "Application.Register"}}">{{msg . "registernew"}}</a>
   </p>
-
 </div>
-    <div class="container">
-
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputPassword" class="sr-only">{{msg . "password"}}</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> {{msg . "remember"}}
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
-
-    </div> <!-- /container -->
-	
+<!-- /container -->
 {{template "footer.html" .}}

@@ -3,7 +3,8 @@ password=密码
 username=用户名
 remember=记住登录状态
 registernew=注册新用户
-
+welcome=欢迎
+please_login_first=请先登录
 login=登录
 logout=注销
 account=账户

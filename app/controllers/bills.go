@@ -4,10 +4,19 @@ import (
 	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
+	"github.com/uileyar/webapp/app/routes"
 )
 
 type Bills struct {
 	Application
+}
+
+func (c Bills) checkUser() revel.Result {
+	if user := c.connected(); user == nil {
+		c.Flash.Error(c.Message("please_login_first"))
+		return c.Redirect(routes.Application.Index())
+	}
+	return nil
 }
 
 func (c Bills) Index() revel.Result {

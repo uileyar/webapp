@@ -11,6 +11,14 @@ type Accounts struct {
 	Application
 }
 
+func (c Accounts) checkUser() revel.Result {
+	if user := c.connected(); user == nil {
+		c.Flash.Error(c.Message("please_login_first"))
+		return c.Redirect(routes.Application.Index())
+	}
+	return nil
+}
+
 func (c Accounts) Index() revel.Result {
 	results, err := c.Txn.Select(models.Account{},
 		`select * from jzb_accounts`)
@@ -40,6 +48,11 @@ func (c Accounts) SaveAccount() revel.Result {
 	c.Validation.Required(name).Message(c.Message("require_account"))
 	c.Validation.MinSize(name, 1).Message(c.Message("account_minsize"))
 	c.Validation.MaxSize(name, 30).Message(c.Message("account_maxsize"))
+	//c.Validation.Match(name, regexp.MustCompile(`^([\u4e00-\u9fa5]{1,20}|[a-zA-Z\.\s]{1,20})$`)).Message(c.Message("wrong_format"))
+
+	if CheckSqlStr(name) {
+		c.Validation.Error("%s %s", name, c.Message("wrong_format"))
+	}
 
 	results, _ := c.Txn.Select(models.Account{},
 		`select * from jzb_accounts where name=?`, name)

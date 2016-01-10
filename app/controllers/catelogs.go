@@ -4,10 +4,19 @@ import (
 	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
+	"github.com/uileyar/webapp/app/routes"
 )
 
 type Catelogs struct {
 	Application
+}
+
+func (c Catelogs) checkUser() revel.Result {
+	if user := c.connected(); user == nil {
+		c.Flash.Error(c.Message("please_login_first"))
+		return c.Redirect(routes.Application.Index())
+	}
+	return nil
 }
 
 func (c Catelogs) Index() revel.Result {

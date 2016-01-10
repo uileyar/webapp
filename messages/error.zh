@@ -3,4 +3,5 @@ require_account=需要输入账户名！
 account_minsize=账户名长度不能小于1！
 account_maxsize=账户名长度不能大于10！
 account_exist=账户名已存在！
-
+wrong_format=格式错误
+password_no_match=密码错误

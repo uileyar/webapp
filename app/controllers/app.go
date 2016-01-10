@@ -44,9 +44,9 @@ func (c Application) Index() revel.Result {
 	glog.Infoln("Index in")
 
 	if c.connected() != nil {
-		return c.Redirect(routes.Catelogs.Index())
+		return c.Redirect(routes.Accounts.Index())
 	}
-	c.Flash.Error("Please log in first")
+	c.Flash.Error(c.Message("please_login_first"))
 	return c.Render()
 }
 
@@ -56,7 +56,7 @@ func (c Application) Register() revel.Result {
 
 func (c Application) SaveUser(user models.User, verifyPassword string) revel.Result {
 	c.Validation.Required(verifyPassword)
-	c.Validation.Required(verifyPassword == user.Password).Message("Password does not match")
+	c.Validation.Required(verifyPassword == user.Password).Message(c.Message("password_no_match"))
 	user.Validate(c.Validation)
 
 	if c.Validation.HasErrors() {
@@ -73,7 +73,7 @@ func (c Application) SaveUser(user models.User, verifyPassword string) revel.Res
 	}
 
 	c.Session["user"] = user.Username
-	c.Flash.Success("Welcome, " + user.Name)
+	c.Flash.Success("%s, %s", c.Message("welcome"), user.Name)
 	return c.Redirect(routes.Accounts.Index())
 }
 
@@ -88,13 +88,13 @@ func (c Application) Login(username, password string, remember bool) revel.Resul
 			} else {
 				c.Session.SetNoExpiration()
 			}
-			c.Flash.Success("Welcome, " + username)
+			c.Flash.Success("%s, %s", c.Message("welcome"), user.Name)
 			return c.Redirect(routes.Accounts.Index())
 		}
 	}
 
 	c.Flash.Out["username"] = username
-	c.Flash.Error("Login failed")
+	c.Flash.Error("%s%s", c.Message("login"), c.Message("failed"))
 	return c.Redirect(routes.Application.Index())
 }
 
