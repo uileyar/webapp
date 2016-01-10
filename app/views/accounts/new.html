@@ -3,19 +3,19 @@
 
 <h2>{{msg . "add"}}{{msg . "account"}}</h2>
 <form class="form-horizontal" action="{{url "Accounts.SaveAccount"}}" method="POST">
-        <div class="form-group">
-        	<label for="inputName" class="col-sm-2 control-label">{{msg . "account"}}</label>	
-	<div class="col-sm-10">	
-        	<input type="text" id="inputName" name ="name" class="form-control" placeholder={{msg . "account"}} required autofocus>
-       	</div>
-        </div>
-      
-        <div class="form-group">
-               <div class="col-sm-offset-2 col-sm-4">	
-               <button class="btn btn-primary" type="submit">{{msg . "ok"}}</button>
-	<a href="{{url "Accounts.Index"}}">Cancel</a>
-	</div>
-        </div>			
+  <div class="form-group">
+    <label for="inputName" class="col-sm-2 control-label">{{msg . "account"}}</label>
+    <div class="col-sm-10">
+      <input type="text" id="inputName" name ="name" class="form-control" placeholder={{msg . "account"}} required autofocus></div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-4">
+      <button class="btn btn-primary" type="submit">{{msg . "ok"}}</button>
+      <a role="button" class="btn btn-info" href="{{url "Accounts.Index"}}">{{msg . "cancel"}}</a>
+    </div>
+  </div>
+
 </form>
 
 {{template "footer.html" .}}
