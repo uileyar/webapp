@@ -33,9 +33,26 @@ func (c Accounts) New() revel.Result {
 }
 
 func (c Accounts) SaveAccount() revel.Result {
-	name := c.Params.Get("name")
 	kind := "cash"
+	name := c.Params.Get("name")
 	glog.Infof("new name = %v", name)
+
+	c.Validation.Required(name).Message(c.Message("require_account"))
+	c.Validation.MinSize(name, 1).Message(c.Message("account_minsize"))
+	c.Validation.MaxSize(name, 30).Message(c.Message("account_maxsize"))
+
+	results, _ := c.Txn.Select(models.Account{},
+		`select * from jzb_accounts where name=?`, name)
+	if len(results) > 0 {
+		c.Validation.Error("%s %s", name, c.Message("account_exist"))
+	}
+
+	if c.Validation.HasErrors() {
+		c.Validation.Keep()
+		c.FlashParams()
+		return c.Redirect(routes.Accounts.New())
+	}
+
 	account := &models.Account{
 		Name: name,
 		Kind: kind,
@@ -45,5 +62,8 @@ func (c Accounts) SaveAccount() revel.Result {
 	if err != nil {
 		panic(err)
 	}
+
+	c.Flash.Success("%s %s %s!", c.Message("add"), name, c.Message("successed"))
+
 	return c.Redirect(routes.Accounts.Index())
 }

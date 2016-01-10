@@ -1,12 +1,18 @@
-{{set . "title" "add"}}
+{{set . "title" "newaccount"}}
 {{template "header.html" .}}
-
-<h2>{{msg . "add"}}{{msg . "account"}}</h2>
+<div class="page-header">
+  <h2>{{msg . "add"}}{{msg . "account"}}</h2>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="span6">{{template "flash.html" .}}</div>
+  </div>
+</div>
 <form class="form-horizontal" action="{{url "Accounts.SaveAccount"}}" method="POST">
   <div class="form-group">
     <label for="inputName" class="col-sm-2 control-label">{{msg . "account"}}</label>
     <div class="col-sm-10">
-      <input type="text" id="inputName" name ="name" class="form-control" placeholder={{msg . "account"}} required autofocus></div>
+      <input type="text" id="inputName" name ="name" class="form-control" maxlength="10" placeholder={{msg . "account"}} required autofocus></div>
   </div>
 
   <div class="form-group">
@@ -15,7 +21,5 @@
       <a role="button" class="btn btn-info" href="{{url "Accounts.Index"}}">{{msg . "cancel"}}</a>
     </div>
   </div>
-
 </form>
-
 {{template "footer.html" .}}
