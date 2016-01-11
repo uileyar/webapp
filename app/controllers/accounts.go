@@ -40,14 +40,14 @@ func (c Accounts) New() revel.Result {
 	return c.Render()
 }
 
-func (c Accounts) SaveAccount() revel.Result {
+func (c Accounts) Save() revel.Result {
 	kind := "cash"
 	name := c.Params.Get("name")
 	glog.Infof("new name = %v", name)
 
-	c.Validation.Required(name).Message(c.Message("require_account"))
-	c.Validation.MinSize(name, 1).Message(c.Message("account_minsize"))
-	c.Validation.MaxSize(name, 30).Message(c.Message("account_maxsize"))
+	c.Validation.Required(name).Message(c.Message("account.name.require"))
+	c.Validation.MinSize(name, 1).Message(c.Message("account.name.minsize"))
+	c.Validation.MaxSize(name, 30).Message(c.Message("account.name.maxsize"))
 	//c.Validation.Match(name, regexp.MustCompile(`^([\u4e00-\u9fa5]{1,20}|[a-zA-Z\.\s]{1,20})$`)).Message(c.Message("wrong_format"))
 
 	if CheckSqlStr(name) {
@@ -57,7 +57,7 @@ func (c Accounts) SaveAccount() revel.Result {
 	results, _ := c.Txn.Select(models.Account{},
 		`select * from jzb_accounts where name=?`, name)
 	if len(results) > 0 {
-		c.Validation.Error("%s %s", name, c.Message("account_exist"))
+		c.Validation.Error("%s %s", name, c.Message("account.name.exist"))
 	}
 
 	if c.Validation.HasErrors() {
@@ -66,12 +66,12 @@ func (c Accounts) SaveAccount() revel.Result {
 		return c.Redirect(routes.Accounts.New())
 	}
 
-	account := &models.Account{
+	data := &models.Account{
 		Name: name,
 		Kind: kind,
 	}
 
-	err := c.Txn.Insert(account)
+	err := c.Txn.Insert(data)
 	if err != nil {
 		panic(err)
 	}

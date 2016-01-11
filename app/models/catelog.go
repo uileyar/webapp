@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/go-gorp/gorp"
@@ -31,6 +32,11 @@ type Catelog struct {
 	Percent    float32   `db:"-"`
 }
 
+func Round(f float32, n int) float32 {
+	pow10_n := math.Pow10(n)
+	return float32(math.Trunc((float64(f)+0.5/pow10_n)*pow10_n) / pow10_n)
+}
+
 func (u *Catelog) String() string {
 	return fmt.Sprintf("Catelog(%#v)", u.Name)
 }
@@ -46,8 +52,11 @@ func (u *Catelog) PostGet(s gorp.SqlExecutor) error {
 		u.Number = number
 	}
 
-	if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE kind = ?`, u.Kind); err == nil {
-		u.Percent = u.Balance / val * 100
+	if u.Balance == 0 {
+		u.Percent = 0
+	} else if err := s.SelectOne(&val, `SELECT sum(amount) from jzb_bills WHERE kind = ?`, u.Kind); err == nil {
+		u.Percent = (u.Balance * 100) / (val * 100) * 100
+		u.Percent = Round(u.Percent, 2)
 	}
 	return nil
 }
