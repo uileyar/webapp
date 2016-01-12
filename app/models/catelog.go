@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/go-gorp/gorp"
@@ -30,11 +29,6 @@ type Catelog struct {
 	Balance    float32   `db:"-"`
 	Number     int       `db:"-"`
 	Percent    float32   `db:"-"`
-}
-
-func Round(f float32, n int) float32 {
-	pow10_n := math.Pow10(n)
-	return float32(math.Trunc((float64(f)+0.5/pow10_n)*pow10_n) / pow10_n)
 }
 
 func (u *Catelog) String() string {

@@ -1,19 +1,27 @@
 # Default values for chinese
 require=需要输入
 minsize=长度不能小于
-maxsize=长度不能大于10
+maxsize=长度不能大于
 exist=已存在
 wrong_format=格式错误
 password_no_match=密码错误
 
 account.name.require=%(account)s%(name)s%(require)s
-account.name.minsize=%(account)s%(name)s%(minsize)s 1
 account.name.maxsize=%(account)s%(name)s%(maxsize)s 10
 account.name.exist=%(account)s%(name)s%(exist)s
 
 catelog.name.require=%(catelog)s%(name)s%(require)s
-catelog.name.minsize=%(catelog)s%(name)s%(minsize)s 1
 catelog.name.maxsize=%(catelog)s%(name)s%(maxsize)s 10
 catelog.name.exist=%(catelog)s%(name)s%(exist)s
-
 catelog.kind.require=%(catelog)s%(kind)s%(require)s
+
+bill.name.require=%(bill)s%(name)s%(require)s
+bill.name.maxsize=%(bill)s%(name)s%(maxsize)s 10
+bill.kind.require=%(bill)s%(kind)s%(require)s
+bill.date.require=%(bill)s%(date)s%(require)s
+bill.title.require=%(bill)s%(title)s%(require)s
+bill.title.maxsize=%(bill)s%(title)s%(maxsize)s 50
+bill.amount.require=%(bill)s%(amount)s%(require)s
+bill.account.require=%(bill)s%(account)s%(require)s
+bill.catelog.require=%(bill)s%(catelog)s%(require)s
+bill.description.maxsize=%(bill)s%(description)s%(maxsize)s 1000

@@ -2,7 +2,11 @@ package models
 
 import (
 	"fmt"
+	"strconv"
 	"time"
+
+	"github.com/go-gorp/gorp"
+	"github.com/golang/glog"
 )
 
 /*
@@ -48,8 +52,36 @@ type Bill struct {
 	Kind                 string    `db:", size:10"`
 	Shared               string    `db:", size:10`
 	Version              time.Time `db:", default:CURRENT_TIMESTAMP"`
+	Catelog_name         string    `db:"-"`
+	Account_name         string    `db:"-"`
 }
 
 func (u *Bill) String() string {
 	return fmt.Sprintf("Bill(%v)", u.Title)
+}
+
+func (u *Bill) PostGet(s gorp.SqlExecutor) error {
+	var val string
+	if err := s.SelectOne(&val, `SELECT name from jzb_accounts WHERE account_id = ?`, u.Account_id); err == nil {
+		u.Account_name = val
+	}
+
+	if err := s.SelectOne(&val, `SELECT name from jzb_catelogs WHERE catelog_id = ?`, u.Catelog_id); err == nil {
+		u.Catelog_name = val
+	}
+
+	return nil
+}
+
+func (u *Bill) PreInsert(s gorp.SqlExecutor) error {
+	u.Bill_id = CreateGUID()
+	month, _ := strconv.ParseInt(u.Date.Format("201506"), 10, 0)
+	u.Month = int(month)
+	glog.Infof("month = %v", u.Month)
+	return nil
+}
+
+func (u *Bill) PreUpdate(s gorp.SqlExecutor) error {
+
+	return nil
 }

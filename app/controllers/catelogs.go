@@ -30,7 +30,7 @@ func (c Catelogs) Index() revel.Result {
 	for _, r := range results {
 		b := r.(*models.Catelog)
 		catelogs = append(catelogs, b)
-		glog.Infof("%v\n", b)
+		//glog.Infof("%v\n", b)
 	}
 
 	return c.Render(catelogs)
@@ -46,7 +46,6 @@ func (c Catelogs) Save() revel.Result {
 	glog.Infof("new name = %v, kind = %v", name, kind)
 
 	c.Validation.Required(name).Message(c.Message("catelog.name.require"))
-	c.Validation.MinSize(name, 1).Message(c.Message("catelog.name.minsize"))
 	c.Validation.MaxSize(name, 30).Message(c.Message("catelog.name.maxsize"))
 	c.Validation.Required(kind).Message(c.Message("catelog.kind.require"))
 
