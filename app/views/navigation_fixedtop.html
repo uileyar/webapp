@@ -1,0 +1,18 @@
+<header>
+	<a href="{{url "Application.Logout"}}" class="logo" >{{msg . "logout"}}</a>
+	<nav class="nav-collapse">
+		<ul>
+			<li class="menu-item {{if eq .active "bills"}} active {{end}}">
+				<a href="{{url "Bills.Index"}}" >{{msg . "bill"}}</a>
+			</li>
+			<li class="menu-item {{if eq .active "accounts"}} active {{end}}">
+				<a href="{{url "Accounts.Index"}}" >{{msg . "account"}}</a>
+			</li>
+			<li class="menu-item {{if eq .active "catelogs"}} active {{end}}">
+				<a href="{{url "Catelogs.Index"}}" >{{msg . "catelog"}}</a>
+			</li>
+		</ul>
+	</nav>
+</header>
+
+<div role="main" class="main">

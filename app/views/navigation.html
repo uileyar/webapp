@@ -1,0 +1,16 @@
+<div role="navigation" id="foo" class="nav-collapse" style="background-color:#444">
+	<ul style="font-size:16px">
+		<li {{if eq .active "bills"}} class="active" {{end}}>
+			<a href="{{url "Bills.Index"}}" >{{msg . "bill"}}</a>
+		</li>
+		<li {{if eq .active "accounts"}} class="active" {{end}}>
+			<a href="{{url "Accounts.Index"}}">{{msg . "account"}}</a>
+		</li>
+		<li {{if eq .active "catelogs"}} class="active" {{end}}>
+			<a href="{{url "Catelogs.Index"}}">{{msg . "catelog"}}</a>
+		</li>
+	</ul>
+</div>
+
+<div role="main" class="main">
+	<a href="#nav" class="nav-toggle">Menu</a>
