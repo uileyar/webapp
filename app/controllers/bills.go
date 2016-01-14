@@ -37,7 +37,29 @@ func (c Bills) Index() revel.Result {
 }
 
 func (c Bills) New() revel.Result {
-	return c.Render()
+	results, err := c.Txn.Select(models.Account{},
+		`select account_id,name from jzb_accounts`)
+	if err != nil {
+		panic(err)
+	}
+	var accounts []*models.Account
+	for _, r := range results {
+		b := r.(*models.Account)
+		accounts = append(accounts, b)
+	}
+
+	results, err = c.Txn.Select(models.Catelog{},
+		`select catelog_id,name from jzb_catelogs`)
+	if err != nil {
+		panic(err)
+	}
+	var catelogs []*models.Catelog
+	for _, r := range results {
+		b := r.(*models.Catelog)
+		catelogs = append(catelogs, b)
+	}
+
+	return c.Render(accounts, catelogs)
 }
 
 func (c Bills) Save(bill models.Bill) revel.Result {

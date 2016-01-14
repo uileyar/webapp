@@ -10,12 +10,15 @@
   </div>
 </div>
 
+<div class="container">
 <p>
   <div class="col-sm-offset-2 col-sm-4">
     <a role="button" class="btn btn-primary" href="{{url "Catelogs.New"}}">{{msg . "add"}}</a>
   </div>
 </p>
+</div>
 
+<div class="container">
 {{if not .catelogs}}
 <p>No Found</p>
 {{else}}
@@ -40,5 +43,6 @@
   </tbody>
 </table>
 {{end}}
+</div>
 
 {{template "footer.html" .}}
