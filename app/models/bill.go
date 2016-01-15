@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/go-gorp/gorp"
@@ -54,6 +55,7 @@ type Bill struct {
 	Version              time.Time `db:", default:CURRENT_TIMESTAMP"`
 	Catelog_name         string    `db:"-"`
 	Account_name         string    `db:"-"`
+	Date_str             string    `db:"-"`
 }
 
 func (u *Bill) String() string {
@@ -75,9 +77,14 @@ func (u *Bill) PostGet(s gorp.SqlExecutor) error {
 
 func (u *Bill) PreInsert(s gorp.SqlExecutor) error {
 	u.Bill_id = CreateGUID()
-	month, _ := strconv.ParseInt(u.Date.Format("201506"), 10, 0)
+
+	f_date := "2006-01-02" //长日期格式
+	u.Date, _ = time.Parse(f_date, u.Date_str)
+
+	strDate := strings.Replace(u.Date_str, "-", "", -1)[0:6]
+	month, _ := strconv.ParseInt(strDate, 10, 0)
 	u.Month = int(month)
-	glog.Infof("month = %v", u.Month)
+	glog.Infof("Date = %v, Month = %v", u.Date, u.Month)
 	return nil
 }
 

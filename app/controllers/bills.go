@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
 	"github.com/uileyar/webapp/app/routes"
@@ -64,8 +63,6 @@ func (c Bills) New() revel.Result {
 
 func (c Bills) Save(bill models.Bill) revel.Result {
 
-	glog.Infof("new name = %v, title = %v", bill.Account_name, bill.Title)
-
 	c.Validate(bill)
 
 	if c.Validation.HasErrors() {
@@ -79,7 +76,7 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 		panic(err)
 	}
 
-	c.Flash.Success("%s %s %s!", c.Message("add"), bill.Title, c.Message("successed"))
+	c.Flash.Success("%s %s %s %d %s!", c.Message("add"), bill.Title, c.Message("amount"), bill.Amount, c.Message("successed"))
 
 	return c.Redirect(routes.Bills.Index())
 }
@@ -98,7 +95,7 @@ func (c Bills) Validate(bill models.Bill) {
 		revel.MaxSize{1000 * 3},
 	).Message(c.Message("bill.description.maxsize"))
 
-	c.Validation.Check(bill.Date,
+	c.Validation.Check(bill.Date_str,
 		revel.Required{},
 	).Message(c.Message("bill.date.require"))
 
@@ -113,6 +110,6 @@ func (c Bills) Validate(bill models.Bill) {
 	c.Validation.Check(bill.Kind,
 		revel.Required{},
 		revel.MaxSize{10 * 3},
-	).Message(c.Message("bill.kind.maxsize"))
+	).Message(c.Message("bill.kind.require"))
 
 }

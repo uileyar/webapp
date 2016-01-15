@@ -9,75 +9,86 @@
 <form class="form-horizontal" role="form" action="{{url "Bills.Save"}}" method="POST">
   <fieldset>
 
-    <legend><span class="glyphicon glyphicon-th"></span>{{msg . "add"}}{{msg . "bill"}}</legend>
+    <legend>
+      <span class="glyphicon glyphicon-th"></span>
+      {{msg . "add"}}{{msg . "bill"}}
+    </legend>
 
-<!-- set kind -->
+    <!-- set kind -->
+    {{with $field := field "bill.Kind" .}}
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <label class="radio-inline">
-          <input type="radio" name="kind" id="inlineRadio1" value="expense" checked>{{msg . "expense"}}</label>
+          <input type="radio" name="{{$field.Name}}" id="inlineRadio1" value="expense" checked>{{msg $ "expense"}}</label>
         <label class="radio-inline">
-          <input type="radio" name="kind" id="inlineRadio2" value="income">{{msg . "income"}}</label>
+          <input type="radio" name="{{$field.Name}}" id="inlineRadio2" value="income">{{msg $ "income"}}</label>
       </div>
     </div>
-
-<!-- set date -->
+    {{end}}
+    <!-- set date -->
+    {{with $field := field "bill.Date_str" .}}
     <div class="form-group">
-      <label for="inputDate" class="col-sm-2 control-label">{{msg . "date"}}</label>
+      <label for="inputDate" class="col-sm-2 control-label">{{msg $ "date"}}</label>
       <div class="col-sm-10">
-<input size="16" type="text" id="inputDate" name="date" value="" class="form-control form_date" readonly required>
-</div>
-</div>
-
-<!-- set title -->
-    <div class="form-group">
-      <label for="inputTitle" class="col-sm-2 control-label">{{msg . "title"}}</label>
-      <div class="col-sm-10">
-        <input type="text" id="inputTitle" name ="title" class="form-control" maxlength="100" placeholder={{msg . "bill.title.maxsize"}} required autofocus></div>
+        <input size="10" type="text" id="inputDate" name="{{$field.Name}}" value="{{$field.Flash}}" class="form-control form_date" readonly required></div>
     </div>
-
-<!-- set amount -->
+    {{end}}
+    <!-- set title -->
+    {{with $field := field "bill.Title" .}}
+    <div class="form-group">
+      <label for="inputTitle" class="col-sm-2 control-label">{{msg $ "title"}}</label>
+      <div class="col-sm-10">
+        <input type="text" id="inputTitle" name ="{{$field.Name}}" value="{{$field.Flash}}" class="form-control" maxlength="100" placeholder={{msg $ "bill.title.maxsize"}} required autofocus></div>
+    </div>
+    {{end}}
+    <!-- set amount -->
+    {{with $field := field "bill.Amount" .}}
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <div class="input-group">
           <span class="input-group-addon">￥</span>
-          <input type="number" class="form-control" name="amount" placeholder={{msg . "amount"}} required></div>
+          <input type="number" step="0.01" class="form-control" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder={{msg $ "amount"}} required></div>
       </div>
     </div>
-
-<!-- set account -->
+    {{end}}
+    <!-- set account -->
     <div class="form-group">
-        <label for="selectAccount" class="col-sm-2 control-label">{{msg . "account"}}</label>
-        <div class="col-sm-10">
-          <select id="selectAccount" class="form-control" name="Account_id">
-            {{range .accounts}}
-            <option value="{{.Account_id}}">{{.Name}}</option>
-            {{end}}
-          </select>
-        </div>  
-    </div>
-
-<!-- set catelog -->
-    <div class="form-group">
-        <label for="selectCatelog" class="col-sm-2 control-label">{{msg . "catelog"}}</label>
-        <div class="col-sm-10">
-          <select id="selectCatelog"  class="form-control" name="Catelog_id">
-            {{range .catelogs}}
-            <option value="{{.Catelog_id}}">{{.Name}}</option>
-            {{end}}
-          </select>
-        </div>
-    </div>
-
-<!-- set description -->
-    <div class="form-group">
-      <label for="inputDes" class="col-sm-2 control-label">{{msg . "description"}}</label>
+      <label for="selectAccount" class="col-sm-2 control-label">{{msg . "account"}}</label>
       <div class="col-sm-10">
-        <textarea id="inputDes" name ="description" class="form-control" maxlength="1000" placeholder={{msg . "bill.description.maxsize"}} rows="3"></textarea>
+        {{with $field := field "bill.Account_id" .}}
+        <select id="selectAccount" class="form-control" name="{{$field.Name}}">
+          {{end}}
+          {{range .accounts}}
+          <option value="{{.Account_id}}">{{.Name}}</option>
+          {{end}}
+        </select>
       </div>
     </div>
 
-<!-- set buttons -->
+    <!-- set catelog -->
+    <div class="form-group">
+      <label for="selectCatelog" class="col-sm-2 control-label">{{msg . "catelog"}}</label>
+      <div class="col-sm-10">
+        {{with $field := field "bill.Catelog_id" .}}
+        <select id="selectCatelog"  class="form-control" name="{{$field.Name}}">
+          {{end}}
+          {{range .catelogs}}
+          <option value="{{.Catelog_id}}">{{.Name}}</option>
+          {{end}}
+        </select>
+      </div>
+    </div>
+
+    <!-- set description -->
+    {{with $field := field "bill.Description" .}}
+    <div class="form-group">
+      <label for="inputDes" class="col-sm-2 control-label">{{msg $ "description"}}</label>
+      <div class="col-sm-10">
+        <textarea id="inputDes" name ="{{$field.Name}}" value="{{$field.Flash}}" class="form-control" maxlength="1000" placeholder={{msg $ "bill.description.maxsize"}} rows="3"></textarea>
+      </div>
+    </div>
+    {{end}}
+    <!-- set buttons -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-4">
         <button class="btn btn-primary" type="submit">{{msg . "ok"}}</button>

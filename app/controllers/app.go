@@ -44,7 +44,7 @@ func (c Application) Index() revel.Result {
 	glog.Infoln("Index in")
 
 	if c.connected() != nil {
-		return c.Redirect(routes.Accounts.Index())
+		return c.Redirect(routes.Bills.Index())
 	}
 	c.Flash.Error(c.Message("please_login_first"))
 	return c.Render()
@@ -74,7 +74,7 @@ func (c Application) SaveUser(user models.User, verifyPassword string) revel.Res
 
 	c.Session["user"] = user.Username
 	c.Flash.Success("%s, %s", c.Message("welcome"), user.Name)
-	return c.Redirect(routes.Accounts.Index())
+	return c.Redirect(routes.Bills.Index())
 }
 
 func (c Application) Login(username, password string, remember bool) revel.Result {
@@ -89,7 +89,7 @@ func (c Application) Login(username, password string, remember bool) revel.Resul
 				c.Session.SetNoExpiration()
 			}
 			c.Flash.Success("%s, %s", c.Message("welcome"), user.Name)
-			return c.Redirect(routes.Accounts.Index())
+			return c.Redirect(routes.Bills.Index())
 		}
 	}
 
