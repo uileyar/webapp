@@ -5,20 +5,22 @@
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->    
-    <script src="/public/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/public/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
     <script type="text/javascript" src="/public/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
     <script type="text/javascript">
 	$('.form_date').datetimepicker({
         language:  'zh-CN',
+        format: "yyyy-mm-dd",
         weekStart: 1,
         todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        minView: 2,
+        forceParse: 0
     });
+    $('.form_date').datetimepicker('setStartDate');
 </script>
 
     </body>

@@ -8,7 +8,10 @@
 
 <form class="form-horizontal" role="form" action="{{url "Bills.Save"}}" method="POST">
   <fieldset>
+
     <legend><span class="glyphicon glyphicon-th"></span>{{msg . "add"}}{{msg . "bill"}}</legend>
+
+<!-- set kind -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <label class="radio-inline">
@@ -17,25 +20,23 @@
           <input type="radio" name="kind" id="inlineRadio2" value="income">{{msg . "income"}}</label>
       </div>
     </div>
-<div class="row">
+
+<!-- set date -->
     <div class="form-group">
-      <label for="dtp_input2" class="col-sm-2 control-label">Date Picking</label>
-      <div class="input-group date form_date col-sm-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-        <input class="form-control" size="16" type="text" value="" readonly>
-        <span class="input-group-addon">
-          <span class="glyphicon glyphicon-calendar"></span>
-        </span>
-      </div>
-      <input type="hidden" id="dtp_input2" value="" />
-      <br/>
-    </div>
+      <label for="inputDate" class="col-sm-2 control-label">{{msg . "date"}}</label>
+      <div class="col-sm-10">
+<input size="16" type="text" id="inputDate" name="date" value="" class="form-control form_date" readonly required>
 </div>
+</div>
+
+<!-- set title -->
     <div class="form-group">
       <label for="inputTitle" class="col-sm-2 control-label">{{msg . "title"}}</label>
       <div class="col-sm-10">
         <input type="text" id="inputTitle" name ="title" class="form-control" maxlength="100" placeholder={{msg . "bill.title.maxsize"}} required autofocus></div>
     </div>
 
+<!-- set amount -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <div class="input-group">
@@ -44,32 +45,31 @@
       </div>
     </div>
 
+<!-- set account -->
     <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <label class="control-label">{{msg . "account"}}</label>
-        <div class="controls">
-          <select class="form-control" name="Account_id">
+        <label for="selectAccount" class="col-sm-2 control-label">{{msg . "account"}}</label>
+        <div class="col-sm-10">
+          <select id="selectAccount" class="form-control" name="Account_id">
             {{range .accounts}}
             <option value="{{.Account_id}}">{{.Name}}</option>
             {{end}}
           </select>
-        </div>
-      </div>
+        </div>  
     </div>
 
+<!-- set catelog -->
     <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <label class="control-label">{{msg . "catelog"}}</label>
-        <div class="controls">
-          <select class="form-control" name="Catelog_id">
+        <label for="selectCatelog" class="col-sm-2 control-label">{{msg . "catelog"}}</label>
+        <div class="col-sm-10">
+          <select id="selectCatelog"  class="form-control" name="Catelog_id">
             {{range .catelogs}}
             <option value="{{.Catelog_id}}">{{.Name}}</option>
             {{end}}
           </select>
         </div>
-      </div>
     </div>
 
+<!-- set description -->
     <div class="form-group">
       <label for="inputDes" class="col-sm-2 control-label">{{msg . "description"}}</label>
       <div class="col-sm-10">
@@ -77,12 +77,14 @@
       </div>
     </div>
 
+<!-- set buttons -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-4">
         <button class="btn btn-primary" type="submit">{{msg . "ok"}}</button>
         <a role="button" class="btn btn-info" href="{{url "Bills.Index"}}">{{msg . "cancel"}}</a>
       </div>
     </div>
+
   </fieldset>
 </form>
 {{template "footer.html" .}}
