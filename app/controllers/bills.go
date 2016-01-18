@@ -76,7 +76,7 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 		panic(err)
 	}
 
-	c.Flash.Success("%v %v %v %v %v!", c.Message("add"), bill.Title, c.Message("amount"), bill.Amount, c.Message("successed"))
+	c.Flash.Success("%v %v %v %v%v %v!", c.Message("add"), bill.Title, c.Message(bill.Kind), "￥", bill.Amount, c.Message("successed"))
 
 	return c.Redirect(routes.Bills.Index())
 }
