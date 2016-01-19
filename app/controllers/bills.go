@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
 	"github.com/uileyar/webapp/app/routes"
@@ -63,6 +64,7 @@ func (c Bills) New() revel.Result {
 
 func (c Bills) Save(bill models.Bill) revel.Result {
 
+	glog.Infof("bill.Date = %v", bill.Date)
 	c.Validate(bill)
 
 	if c.Validation.HasErrors() {
@@ -95,7 +97,7 @@ func (c Bills) Validate(bill models.Bill) {
 		revel.MaxSize{1000 * 3},
 	).Message(c.Message("bill.description.maxsize"))
 
-	c.Validation.Check(bill.Date_str,
+	c.Validation.Check(bill.Date,
 		revel.Required{},
 	).Message(c.Message("bill.date.require"))
 
