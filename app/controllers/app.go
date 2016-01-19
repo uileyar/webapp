@@ -51,6 +51,7 @@ func (c Application) Index() revel.Result {
 }
 
 func (c Application) Register() revel.Result {
+	return c.Redirect(routes.Application.Index())
 	return c.Render()
 }
 
