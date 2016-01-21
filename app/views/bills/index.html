@@ -21,9 +21,9 @@
   {{if not .bills}}
   <p>No Found</p>
   {{else}}
+  <!-- class="table table-striped table-bordered table-condensed table-responsive" -->
   <table 
         data-toggle="table"
-        class="table table-striped table-bordered table-condensed table-responsive"
         data-show-toggle="true"
         data-show-columns="true"       
         data-sort-name="date"
@@ -75,25 +75,50 @@
 </div>
 
 <script>
-     var $table = $('#table');
+  var $table = $('#table');
 
-    $(function () {
+  $(function () {
+  });
+
+  function detailFormatter(index, row) {
+    var html = [];
+
+    $.each(row, function (key, value) {
+      var mKey;
+      switch (key){
+        case "date":
+                mKey = {{msg . "date"}};
+              break;
+      case "title":
+              mKey = {{msg . "title"}};
+      break;
+      case "amount":
+              mKey = {{msg . "amount"}};
+      break;
+      case "account":
+              mKey = {{msg . "account"}};
+      break;
+      case "catelog":
+              mKey = {{msg . "catelog"}};
+      break;
+      case "description":
+              mKey = {{msg . "description"}};
+      break;
+        default:
+      return;
+      }
+        html.push('<p><b>' + mKey + ':</b> ' + value + '</p>');
     });
+    return html.join('');
+  }
 
-    function detailFormatter(index, row) {
-        var html = [];
-        $.each(row, function (key, value) {
-            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-        });
-        return html.join('');
-    }
+  function amountSorter(a, b) {
 
-function amountSorter(a, b) {
-  var ia = parseFloat(a);
-  var ib = parseFloat(b);
-  if (ia > ib) return 1;
-  if (ia < ib) return -1;
-  return 0;
-    }
+    var ia = parseFloat(a);
+    var ib = parseFloat(b);
+    if (ia > ib) return 1;
+    if (ia < ib) return -1;
+    return 0;
+  }
 </script>
 {{template "footer.html" .}}
