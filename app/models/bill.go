@@ -81,10 +81,14 @@ func (u *Bill) PreInsert(s gorp.SqlExecutor) error {
 	//u.Date, _ = time.Parse(f_date, u.Date_str)
 	//strDate := strings.Replace(u.Date_str, "-", "", -1)[0:6]
 
+	if u.Kind == "expense" && u.Amount > 0 {
+		u.Amount = -u.Amount
+	}
+	//u.Amount = Round(u.Amount, 2)
 	strDate := u.Date.Format("200601")
 	month, _ := strconv.ParseInt(strDate, 10, 0)
 	u.Month = int(month)
-	glog.Infof("Date = %v, Month = %v", u.Date, u.Month)
+	glog.Infof("Kind = %v, Amount = %v, Date = %v, Month = %v", u.Kind, u.Amount, u.Date, u.Month)
 	return nil
 }
 
