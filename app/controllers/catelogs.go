@@ -19,9 +19,9 @@ func (c Catelogs) checkUser() revel.Result {
 	return nil
 }
 
-func (c Catelogs) Index() revel.Result {
+func (c Catelogs) JsonData() revel.Result {
 	results, err := c.Txn.Select(models.Catelog{},
-		`select * from jzb_catelogs`)
+		`select * from jzb_catelogs order by kind, name ASC`)
 	if err != nil {
 		panic(err)
 	}
@@ -33,7 +33,11 @@ func (c Catelogs) Index() revel.Result {
 		//glog.Infof("%v\n", b)
 	}
 
-	return c.Render(catelogs)
+	return c.RenderJson(results)
+}
+
+func (c Catelogs) Index() revel.Result {
+	return c.Render()
 }
 
 func (c Catelogs) New() revel.Result {

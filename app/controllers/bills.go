@@ -21,7 +21,7 @@ func (c Bills) checkUser() revel.Result {
 
 func (c Bills) Index() revel.Result {
 	results, err := c.Txn.Select(models.Bill{},
-		`select bill_id,amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills`)
+		`select bill_id,amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills order by version DESC`)
 	if err != nil {
 		panic(err)
 	}

@@ -3,6 +3,11 @@
 
 {{set . "active" "bills"}}
 {{template "navigation.html" .}}
+
+<style>
+    table td{font-size:12px;}
+</style>
+
 <div class="container">
   <div class="row">
     <div class="span6">{{template "flash.html" .}}</div>
@@ -22,10 +27,10 @@
   <p>No Found</p>
   {{else}}
   <!-- class="table table-striped table-bordered table-condensed table-responsive" -->
-  <table 
+  <table
         data-toggle="table"
         data-show-toggle="true"
-        data-show-columns="true"       
+        data-show-columns="true"
         data-sort-name="date"
         data-sort-order="desc"
         data-pagination="true"
@@ -49,24 +54,12 @@
     <tbody>
       {{range .bills}}
       <tr>
-        <td>
-          <small>{{.Date.Format "2006-01-02"}}</small>
-        </td>
-        <td>
-          <small>{{.Title}}</small>
-        </td>
-        <td>
-          {{.Amount}}
-        </td>
-        <td>
-          <small>{{.Account_name}}</small>
-        </td>
-        <td>
-          <small>{{.Catelog_name}}</small>
-        </td>
-        <td>
-          <small>{{.Description}}</small>
-        </td>
+        <td>{{.Date.Format "2006-01-02"}}</td>
+        <td>{{.Title}}</td>
+        <td>{{.Amount}}</td>
+        <td>{{.Account_name}}</td>
+        <td>{{.Catelog_name}}</td>
+        <td>{{.Description}}</td>
       </tr>
       {{end}}
     </tbody>
@@ -86,15 +79,15 @@
     $.each(row, function (key, value) {
       var mKey;
       switch (key){
-        case "date":
+          case "date":
                 mKey = {{msg . "date"}};
               break;
-      case "title":
+        case "title":
               mKey = {{msg . "title"}};
-      break;
-      case "amount":
+        break;
+        case "amount":
               mKey = {{msg . "amount"}};
-      break;
+        break;
       case "account":
               mKey = {{msg . "account"}};
       break;

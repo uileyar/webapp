@@ -19,21 +19,18 @@ func (c Accounts) checkUser() revel.Result {
 	return nil
 }
 
-func (c Accounts) Index() revel.Result {
+func (c Accounts) JsonData() revel.Result {
 	results, err := c.Txn.Select(models.Account{},
-		`select * from jzb_accounts`)
+		`select * from jzb_accounts ORDER BY name DESC`)
 	if err != nil {
 		panic(err)
 	}
 
-	var accounts []*models.Account
-	for _, r := range results {
-		b := r.(*models.Account)
-		accounts = append(accounts, b)
-		//glog.Infof("%v\n", b.Name)
-	}
+	return c.RenderJson(results)
+}
 
-	return c.Render(accounts)
+func (c Accounts) Index() revel.Result {
+	return c.Render()
 }
 
 func (c Accounts) New() revel.Result {
