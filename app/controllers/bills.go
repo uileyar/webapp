@@ -19,6 +19,12 @@ func (c Bills) checkUser() revel.Result {
 	return nil
 }
 
+func (c Bills) Delete() revel.Result {
+	glog.Infof("url %v\n", c.Request.RequestURI)
+
+	return c.RenderText("200 ok")
+}
+
 func (c Bills) Index() revel.Result {
 	results, err := c.Txn.Select(models.Bill{},
 		`select bill_id,amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills order by version DESC`)

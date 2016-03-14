@@ -16,6 +16,7 @@ bill=记账
 change=修改
 delete=删除
 
+operate=操作
 successed=成功
 failed=失败
 ok=确定

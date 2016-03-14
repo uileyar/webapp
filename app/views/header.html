@@ -17,8 +17,18 @@
   {{range .moreStyles}}
   <link rel="stylesheet" type="text/css" href="/public/{{.}}">
   {{end}}
-    {{range .moreScripts}}
+  {{range .moreScripts}}
   <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
   {{end}}
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
+
+  <script type="text/javascript" src="/public/js/bootstrap-table/bootstrap-table.min.js"></script>
+  <script type="text/javascript" src="/public/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+  <script type="text/javascript" src="/public/js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 </head>
 <body>
