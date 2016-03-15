@@ -41,6 +41,9 @@ prepage=上一页
 nextpage=下一页
 lastpage=末页
 
+delete.successed=%(delete)s%(successed)s
+delete.failed=%(delete)s%(failed)s
+
 [CN]
 
 

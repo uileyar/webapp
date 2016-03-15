@@ -20,9 +20,19 @@ func (c Bills) checkUser() revel.Result {
 }
 
 func (c Bills) Delete() revel.Result {
-	glog.Infof("url %v\n", c.Request.RequestURI)
+	uid := c.Request.PostFormValue("uid")
+	//c.Response.Status = 200
+	if len(uid) < 10 {
+		return c.NotFound(uid)
+	}
 
-	return c.RenderText("200 ok")
+	_, err := c.Txn.Select(models.Bill{},
+		`delete from jzb_bills WHERE bill_id = ?`, uid)
+	if err != nil {
+		panic(err)
+	}
+
+	return c.RenderText("ok")
 }
 
 func (c Bills) Index() revel.Result {

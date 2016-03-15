@@ -5,13 +5,22 @@
 {{template "navigation.html" .}}
 
 <style>
-    table td{font-size:12px;}
+    table td {
+        font-size: 12px;
+    }
+
+    .alert {
+        padding: 0 14px;
+        margin-bottom: 0;
+        display: inline-block;
+    }
 </style>
 
 <div class="container">
-  <div class="row">
-    <div class="span6">{{template "flash.html" .}}</div>
-  </div>
+    <div class="row">
+        <div class="span6">{{template "flash.html" .}}</div>
+    </div>
+    <span class="alert"></span>
 </div>
 
 <div class="container">
@@ -49,7 +58,7 @@
         <th data-field="account" data-halign="center" data-align="left" data-sortable="true" data-visible="false" data-filter-control="select">{{msg . "account"}}</th>
         <th data-field="catelog" data-halign="center" data-align="left" data-sortable="true" data-visible="false" data-filter-control="select">{{msg . "catelog"}}</th>
         <th data-field="description" data-halign="center" data-align="left" data-visible="false">{{msg . "description"}}</th>
-        <th data-field="uid" data-visible="true" data-events="operateEvents" data-formatter="operateFormatter" >{{msg . "operate"}}</th>
+        <th data-field="uid" data-events="operateEvents" data-formatter="operateFormatter" data-visible="false">{{msg . "operate"}}</th>
       </tr>
     </thead>
     <tbody>
@@ -70,7 +79,12 @@
 </div>
 
 <script>
-  var $table = $('#table');
+    var del_url = {{url "Bills.Delete"}};
+    var index_url = {{url "Bills.Index"}};
+
+    var $table = $('#table'),
+            $alert = $('.alert').hide();
+
 
   function detailFormatter(index, row) {
     var html = [];
@@ -104,32 +118,54 @@
     return html.join('');
   }
 
+  function amountSorter(a, b) {
+
+    var ia = parseFloat(a);
+    var ib = parseFloat(b);
+    if (ia > ib) return 1;
+    if (ia < ib) return -1;
+    return 0;
+  }
+
   window.operateEvents = {
 
     'click .remove': function (e, value, row, index) {
       //alert('You remove like action, row: ' + JSON.stringify(row));
-      if (confirm('Are you sure to delete this item?')) {
+      if (confirm({{msg . "delete"}} + row.title +'?')) {
         $.ajax({
-          url: {{url "Bills.Delete"}} + '/' + row.uid,
-          type: 'get',
-          success: function () {
-            $table.bootstrapTable('refresh');
-            showAlert('Delete item successful!', 'success');
+          url: del_url,
+          type: 'post',
+		  data:{uid:row.uid},
+          success: function (data) {
+              $table.bootstrapTable('remove', {
+                  field: 'uid',
+                  values: [row.uid]
+              });
+              showAlert(row.title + {{msg . "delete.successed"}}, 'success');
           },
           error: function () {
-            showAlert('Delete item error!', 'danger');
+              showAlert(row.title + {{msg . "delete.failed"}}, 'danger');
           }
-        })
+        });
       }
     }
   };
 
-  function operateFormatter(value, row, index) {
-    return [
-      '<a class="remove" href="javascript:void(0)" title="Remove">',
-      '<i class="glyphicon glyphicon-remove"></i>',
-      '</a>'
-    ].join('');
-  }
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="remove" href="javascript:void(0)" title="Remove">',
+            '<i class="glyphicon glyphicon-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
+    function showAlert(title, type) {
+        $alert.attr('class', 'alert alert-' + type || 'success')
+                .html('<i class="glyphicon glyphicon-check"></i> ' + title).show();
+        setTimeout(function () {
+            $alert.hide();
+        }, 3000);
+    }
+
 </script>
 {{template "footer.html" .}}

@@ -2,21 +2,25 @@
     {{template "debug.html" .}}
   {{end}}
 
-  <script type="text/javascript" src="/public/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
-  <script type="text/javascript" src="/public/js/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+  {{if eq .title "newbill"}}
+  <script type="text/javascript" src="/public/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"
+          charset="UTF-8"></script>
+  <script type="text/javascript" src="/public/js/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"
+          charset="UTF-8"></script>
   <script type="text/javascript">
-    $('.form_date').datetimepicker({
-        language:  'zh-CN',
-        format: "yyyy-mm-dd",
-        weekStart: 1,
-        todayBtn:  1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-</script>
+      $('.form_date').datetimepicker({
+          language: 'zh-CN',
+          format: "yyyy-mm-dd",
+          weekStart: 1,
+          todayBtn: 1,
+          autoclose: 1,
+          todayHighlight: 1,
+          startView: 2,
+          minView: 2,
+          forceParse: 0
+      });
+  </script>
+  {{end}}
 
   </body>
   </html>
