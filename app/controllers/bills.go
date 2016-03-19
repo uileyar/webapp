@@ -2,10 +2,20 @@ package controllers
 
 import (
 	"github.com/golang/glog"
+	"github.com/revel/modules/jobs/app/jobs"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
 	"github.com/uileyar/webapp/app/routes"
 )
+
+type SendConfirmationEmail struct {
+	// 过滤
+}
+
+func (e SendConfirmationEmail) Run() {
+	// 查询数据库
+	// 发送电子邮件
+}
 
 type Bills struct {
 	Application
@@ -95,6 +105,9 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 	}
 
 	c.Flash.Success("%v %v %v %v%v %v!", c.Message("add"), bill.Title, c.Message(bill.Kind), "￥", bill.Amount, c.Message("successed"))
+
+	// 立即发送电子邮件（异步）
+	jobs.Now(SendConfirmationEmail{})
 
 	return c.Redirect(routes.Bills.Index())
 }

@@ -27,3 +27,5 @@ GET     /favicon.ico                Static.Serve("public/img","favicon.png")
 
 # Catch all
 *       /:controller/:action        :controller.:action
+
+module:jobs
