@@ -8,19 +8,12 @@
     table td {
         font-size: 12px;
     }
-
-    .alert {
-        padding: 0 14px;
-        margin-bottom: 0;
-        display: inline-block;
-    }
 </style>
 
 <div class="container">
     <div class="row">
-        <div class="span6">{{template "flash.html" .}}</div>
+        <div class="span6 delflash">{{template "flash.html" .}}</div>
     </div>
-    <span class="alert"></span>
 </div>
 
 <div class="container">
@@ -79,13 +72,17 @@
 </div>
 
 <script>
+
     var del_url = {{url "Bills.Delete"}};
     var index_url = {{url "Bills.Index"}};
 
-    var $table = $('#table'),
-            $alert = $('.alert').hide();
+    var $table = $('#table');
+	var $delflash = $('.delflash');
 
-
+ setTimeout(function () {
+            $delflash.hide();
+        }, 3000);
+		
   function detailFormatter(index, row) {
     var html = [];
 
@@ -128,7 +125,6 @@
   }
 
   window.operateEvents = {
-
     'click .remove': function (e, value, row, index) {
       //alert('You remove like action, row: ' + JSON.stringify(row));
       if (confirm({{msg . "delete"}} + row.title +'?')) {
@@ -160,10 +156,11 @@
     }
 
     function showAlert(title, type) {
-        $alert.attr('class', 'alert alert-' + type || 'success')
+		$delflash.show();
+        $delflash.attr('class', 'alert alert-' + type || 'success')
                 .html('<i class="glyphicon glyphicon-check"></i> ' + title).show();
         setTimeout(function () {
-            $alert.hide();
+            $delflash.hide();
         }, 3000);
     }
 

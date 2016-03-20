@@ -1,6 +1,7 @@
 package models
 
 import (
+	"crypto/tls"
 	"math"
 
 	"github.com/golang/glog"
@@ -24,7 +25,7 @@ func Round(f float32, n int) float32 {
 func SendMail(subject string, body string) {
 	var session string = "mail"
 
-	c, err := goconfig.LoadConfigFile("set.ini")
+	c, err := goconfig.LoadConfigFile("webapp.ini")
 	if err != nil {
 		panic(err)
 	}
@@ -49,4 +50,15 @@ func SendMail(subject string, body string) {
 	if err := d.DialAndSend(m); err != nil {
 		panic(err)
 	}
+}
+
+type SendConfirmationEmail struct {
+	Subject string
+	Body    string
+}
+
+func (e SendConfirmationEmail) Run() {
+	// 查询数据库
+	// 发送电子邮件
+	SendMail(e.Subject, e.Body)
 }
