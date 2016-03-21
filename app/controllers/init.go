@@ -17,6 +17,7 @@ func init() {
 	revel.InterceptMethod(Accounts.checkUser, revel.BEFORE)
 	revel.InterceptMethod(Catelogs.checkUser, revel.BEFORE)
 	revel.InterceptMethod(Bills.checkUser, revel.BEFORE)
+	revel.InterceptMethod(Analytics.checkUser, revel.BEFORE)
 	revel.InterceptMethod((*GorpController).Commit, revel.AFTER)
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
 }

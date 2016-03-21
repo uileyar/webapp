@@ -21,6 +21,9 @@
 				<li {{if eq .active "catelogs"}} class="active" {{end}}>
 					<a href="{{url "Catelogs.Index"}}">{{msg . "catelog"}}</a>
 				</li>
+				<li {{if eq .active "analytics"}} class="active" {{end}}>
+					<a href="{{url "Analytics.Index"}}">{{msg . "analytics"}}</a>
+				</li>
 			</ul>
 		</div>
 	</div>

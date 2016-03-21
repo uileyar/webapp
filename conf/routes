@@ -21,6 +21,8 @@ GET     /catelogs                   Catelogs.Index
 GET     /catelogs/new               Catelogs.New
 POST    /catelogs/new               Catelogs.Save
 
+GET     /analytics                  Analytics.Index
+
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath           Static.Serve("public")
 GET     /favicon.ico                Static.Serve("public/img","favicon.png")
