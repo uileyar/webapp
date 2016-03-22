@@ -82,6 +82,29 @@ func (c Bills) Index() revel.Result {
 }
 
 func (c Bills) New() revel.Result {
+	var bill *models.Bill
+	uid := c.Request.FormValue("uid")
+	if len(uid) > 10 {
+		bills, err := c.Txn.Select(models.Bill{},
+			`select bill_id,amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills WHERE bill_id = ?`, uid)
+		if err != nil {
+			panic(err)
+		}
+
+		for _, r := range bills {
+			bill = r.(*models.Bill)
+			break
+		}
+		if bill.Amount < 0 {
+			bill.Amount = -bill.Amount
+		}
+	}
+	if bill == nil {
+		bill = new(models.Bill)
+	}
+
+	glog.Infof("%v\n", bill.Bill_id)
+
 	results, err := c.Txn.Select(models.Account{},
 		`select account_id,name from jzb_accounts`)
 	if err != nil {
@@ -104,7 +127,7 @@ func (c Bills) New() revel.Result {
 		catelogs = append(catelogs, b)
 	}
 
-	return c.Render(accounts, catelogs)
+	return c.Render(accounts, catelogs, bill)
 }
 
 func (c Bills) Save(bill models.Bill) revel.Result {
