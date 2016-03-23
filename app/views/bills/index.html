@@ -4,12 +4,6 @@
 {{set . "active" "bills"}}
 {{template "navigation.html" .}}
 
-<style>
-    table td {
-        font-size: 12px;
-    }
-</style>
-
 <div class="container">
     <div class="row">
         <div class="span6 delflash">{{template "flash.html" .}}</div>
@@ -51,18 +45,18 @@
         <th data-field="account" data-halign="center" data-align="left" data-sortable="true" data-visible="false" data-filter-control="select">{{msg . "account"}}</th>
         <th data-field="catelog" data-halign="center" data-align="left" data-sortable="true" data-visible="false" data-filter-control="select">{{msg . "catelog"}}</th>
         <th data-field="description" data-halign="center" data-align="left" data-visible="false">{{msg . "description"}}</th>
-        <th data-field="uid" data-events="operateEvents" data-formatter="operateFormatter" data-visible="false">{{msg . "operate"}}</th>
+        <th data-field="uid" data-events="operateEvents" data-formatter="operateFormatter" data-visible="true">{{msg . "operate"}}</th>
       </tr>
     </thead>
     <tbody>
       {{range .bills}}
       <tr>
-        <td>{{.Date.Format "2006-01-02"}}</td>
-        <td>{{.Title}}</td>
-        <td>{{.Amount}}</td>
-        <td>{{.Account_name}}</td>
-        <td>{{.Catelog_name}}</td>
-        <td>{{.Description}}</td>
+        <td class="small">{{.Date.Format "2006-01-02"}}</td>
+        <td class="small">{{.Title}}</td>
+        <td class="small">{{.Amount}}</td>
+        <td class="small">{{.Account_name}}</td>
+        <td class="small">{{.Catelog_name}}</td>
+        <td class="small">{{.Description}}</td>
         <td style="display:none;">{{.Bill_id}}</td>
       </tr>
       {{end}}
@@ -75,13 +69,14 @@
 
     var del_url = {{url "Bills.Delete"}};
     var index_url = {{url "Bills.Index"}};
+	var update_url = {{url "Bills.New"}};
 
     var $table = $('#table');
 	var $delflash = $('.delflash');
 
  setTimeout(function () {
             $delflash.hide();
-        }, 3000);
+        }, 8000);
 		
   function detailFormatter(index, row) {
     var html = [];
@@ -125,6 +120,12 @@
   }
 
   window.operateEvents = {
+	'click .update': function (e, value, row, index) {
+      if (confirm({{msg . "change"}} + row.title +'?')) {
+		window.location.href = update_url + "?uid="+row.uid;  
+      }        
+    },
+		
     'click .remove': function (e, value, row, index) {
       //alert('You remove like action, row: ' + JSON.stringify(row));
       if (confirm({{msg . "delete"}} + row.title +'?')) {
@@ -148,11 +149,14 @@
   };
 
     function operateFormatter(value, row, index) {
-        return [
-            '<a class="remove" href="javascript:void(0)" title="Remove">',
-            '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
-        ].join('');
+        return [	
+		'<div class="pull-left">',
+		    '<a class="update" href="javascript:void(0)" title="Update"><i class="glyphicon glyphicon-edit"></i></a>  ',
+        '</div>',
+		'<div class="pull-right">',
+		    '<a class="remove" href="javascript:void(0)" title="Remove"><i class="glyphicon glyphicon-remove"></i></a>',
+		'</div>',
+		].join('');
     }
 
     function showAlert(title, type) {
@@ -161,7 +165,7 @@
                 .html('<i class="glyphicon glyphicon-check"></i> ' + title).show();
         setTimeout(function () {
             $delflash.hide();
-        }, 3000);
+        }, 8000);
     }
 
 </script>

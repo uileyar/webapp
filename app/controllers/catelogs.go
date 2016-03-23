@@ -26,13 +26,6 @@ func (c Catelogs) JsonData() revel.Result {
 		panic(err)
 	}
 
-	var catelogs []*models.Catelog
-	for _, r := range results {
-		b := r.(*models.Catelog)
-		catelogs = append(catelogs, b)
-		//glog.Infof("%v\n", b)
-	}
-
 	return c.RenderJson(results)
 }
 
