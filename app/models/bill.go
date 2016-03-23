@@ -88,11 +88,17 @@ func (u *Bill) PreInsert(s gorp.SqlExecutor) error {
 	strDate := u.Date.Format("200601")
 	month, _ := strconv.ParseInt(strDate, 10, 0)
 	u.Month = int(month)
-	glog.Infof("Kind = %v, Amount = %v, Date = %v, Month = %v", u.Kind, u.Amount, u.Date, u.Month)
+	glog.Infof("add bill Kind = %v, Amount = %v, Date = %v, Month = %v", u.Kind, u.Amount, u.Date, u.Month)
 	return nil
 }
 
 func (u *Bill) PreUpdate(s gorp.SqlExecutor) error {
-
+	if u.Kind == "expense" && u.Amount > 0 {
+		u.Amount = -u.Amount
+	}
+	strDate := u.Date.Format("200601")
+	month, _ := strconv.ParseInt(strDate, 10, 0)
+	u.Month = int(month)
+	glog.Infof("update bill Kind = %v, Amount = %v, Date = %v, Month = %v", u.Kind, u.Amount, u.Date, u.Month)
 	return nil
 }

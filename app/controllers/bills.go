@@ -2,8 +2,9 @@ package controllers
 
 import (
 	"fmt"
+	"time"
 
-	"github.com/golang/glog"
+	//"github.com/golang/glog"
 	"github.com/revel/modules/jobs/app/jobs"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
@@ -23,21 +24,16 @@ func (c Bills) checkUser() revel.Result {
 }
 
 func (c Bills) Delete() revel.Result {
+	var bill models.Bill
 	uid := c.Request.PostFormValue("uid")
 	if len(uid) < 10 {
 		return c.NotFound(uid)
 	}
 
-	results, err := c.Txn.Select(models.Bill{},
+	err := c.Txn.SelectOne(&bill,
 		`select amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills WHERE bill_id = ?`, uid)
 	if err != nil {
 		panic(err)
-	}
-
-	var bill *models.Bill
-	for _, r := range results {
-		bill = r.(*models.Bill)
-		break
 	}
 
 	_, err = c.Txn.Select(models.Bill{},
@@ -82,57 +78,39 @@ func (c Bills) Index() revel.Result {
 }
 
 func (c Bills) New() revel.Result {
-	var bill *models.Bill
+	var bill models.Bill
+
 	uid := c.Request.FormValue("uid")
 	if len(uid) > 10 {
-		bills, err := c.Txn.Select(models.Bill{},
-			`select bill_id,amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills WHERE bill_id = ?`, uid)
+		//glog.Infof("get bill id = %v\n", uid)
+		err := c.Txn.SelectOne(&bill, `select bill_id,amount,title,description,date,month,catelog_id,account_id,kind,shared,version from jzb_bills WHERE bill_id = ?`, uid)
 		if err != nil {
 			panic(err)
-		}
-
-		for _, r := range bills {
-			bill = r.(*models.Bill)
-			break
 		}
 		if bill.Amount < 0 {
 			bill.Amount = -bill.Amount
 		}
-	}
-	if bill == nil {
-		bill = new(models.Bill)
+		//glog.Infof("Description = %v", bill.Description)
+	} else {
+		bill.Date = time.Now()
 	}
 
-	glog.Infof("%v\n", bill.Bill_id)
-
-	results, err := c.Txn.Select(models.Account{},
+	accounts, err := c.Txn.Select(models.Account{},
 		`select account_id,name from jzb_accounts`)
 	if err != nil {
 		panic(err)
 	}
-	var accounts []*models.Account
-	for _, r := range results {
-		b := r.(*models.Account)
-		accounts = append(accounts, b)
-	}
 
-	results, err = c.Txn.Select(models.Catelog{},
+	catelogs, err := c.Txn.Select(models.Catelog{},
 		`select catelog_id,name from jzb_catelogs`)
 	if err != nil {
 		panic(err)
-	}
-	var catelogs []*models.Catelog
-	for _, r := range results {
-		b := r.(*models.Catelog)
-		catelogs = append(catelogs, b)
 	}
 
 	return c.Render(accounts, catelogs, bill)
 }
 
 func (c Bills) Save(bill models.Bill) revel.Result {
-
-	glog.Infof("bill.Date = %v", bill.Date)
 	c.Validate(bill)
 
 	if c.Validation.HasErrors() {
@@ -141,9 +119,17 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 		return c.Redirect(routes.Bills.New())
 	}
 
-	err := c.Txn.Insert(&bill)
-	if err != nil {
-		panic(err)
+	status := "add"
+	if id := c.Request.FormValue("bill"); len(id) > 0 {
+		status = "change"
+		bill.Bill_id = id
+		if _, err := c.Txn.Update(&bill); err != nil {
+			panic(err)
+		}
+	} else {
+		if err := c.Txn.Insert(&bill); err != nil {
+			panic(err)
+		}
 	}
 
 	// 立即发送电子邮件（异步）
@@ -151,9 +137,12 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 	if bill.Amount < 0 {
 		amount = -bill.Amount
 	}
-	subject := fmt.Sprintf("%v%v %v %v￥%v", c.Message("add"), c.Message("bill"), bill.Title, c.Message(bill.Kind), amount)
-	body := fmt.Sprintf("%v%v%v %v:%v; %v:￥%v; %v:%v; %v:%v", c.connected().Name, c.Message("add"), c.Message(bill.Kind),
+	account, _ := c.Txn.SelectStr(`select name from jzb_accounts WHERE account_id = ?`, bill.Account_id)
+	catelog, _ := c.Txn.SelectStr(`select name from jzb_catelogs WHERE catelog_id = ?`, bill.Catelog_id)
+	subject := fmt.Sprintf("%v%v %v %v￥%v", c.Message(status), c.Message("bill"), bill.Title, c.Message(bill.Kind), amount)
+	body := fmt.Sprintf("%v%v%v %v:%v; %v:￥%v; %v:%v; %v:%v; %v:%v; %v:%v", c.connected().Name, c.Message(status), c.Message(bill.Kind),
 		c.Message("date"), bill.Date.Format("2006-01-02"), c.Message("amount"), amount,
+		c.Message("account"), account, c.Message("catelog"), catelog,
 		c.Message("title"), bill.Title, c.Message("description"), bill.Description)
 
 	jobs.Now(models.SendConfirmationEmail{
@@ -161,7 +150,7 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 		Body:    body,
 	})
 
-	c.Flash.Success("%v %v %v %v%v %v!", c.Message("add"), bill.Title, c.Message(bill.Kind), "￥", bill.Amount, c.Message("successed"))
+	c.Flash.Success("%v %v %v %v%v %v!", c.Message(status), bill.Title, c.Message(bill.Kind), "￥", bill.Amount, c.Message("successed"))
 	return c.Redirect(routes.Bills.Index())
 }
 

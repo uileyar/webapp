@@ -90,7 +90,7 @@
     <div class="form-group">
       <label for="inputDes" class="col-sm-2 control-label">{{msg $ "description"}}</label>
       <div class="col-sm-10">
-        <textarea id="inputDes" name ="bill.Description" value="{{.bill.Description}}" class="form-control" maxlength="1000" placeholder={{msg $ "bill.description.maxsize"}} rows="3"></textarea>
+        <textarea id="inputDes" name ="bill.Description" class="form-control" maxlength="1000" placeholder="{{msg $ "bill.description.maxsize"}}" rows="3">{{.bill.Description}}</textarea>
       </div>
     </div>
 
