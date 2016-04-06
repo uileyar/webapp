@@ -25,8 +25,7 @@
 <div class="container">
 <table
         data-toggle="table"
-        class="highchart table table-striped table-bordered table-condensed table-responsive"
-		data-graph-container=".highchart-container2" 
+        class="table table-striped table-bordered table-condensed table-responsive"
 		data-graph-type="line"
         data-show-toggle="true"
         data-show-columns="true"
@@ -45,16 +44,85 @@
 </table>
 </div>
 
-<script type="text/javascript">
+<div id="container-hc" class="col-sm-offset-1 col-lg-10 col-md-11 col-sm-11 col-xs-12">
+<script src="http://cdn.hcharts.cn/highcharts/themes/grid-light.js"></script>
 
-$(window).load(function(){
-  $('table.highchart').highchartTable();
-});
-/*
-$(document).ready(function(){
-  $('table.highchart').highchartTable();
-});
-*/
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var chart = {
+            type: 'line'
+        };
+        var title = {
+            text: '月统计'
+        };
+        var xAxis = {
+			type: 'datetime',
+            minTickInterval: 3600*24*30*1000,//time in milliseconds
+            minRange: 3600*24*30*1000,
+            ordinal: false, //this sets the fixed time formats                 
+            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+        };
+        var yAxis = {
+            allowDecimals: false,
+            min: 0
+        };
+        var tooltip = {
+            enabled: true,
+			shared: true,
+            crosshairs: true,
+            formatter: function () {
+                return '<b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y + '°C';
+            }
+        };
+        var plotOptions = {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        };
+        var credits = {
+            enabled: false
+        };
+        var series = [{
+            name: 'John',
+            data: [5, 3, 4, 7, 2],
+            stack: 'male'
+        }, {
+            name: 'Joe',
+            data: [3, 4, 4, 2, 5],
+            stack: 'male'
+        }, {
+            name: 'Jane',
+            data: [2, 5, 6, 2, 1],
+            stack: 'female'
+        }, {
+            name: 'Janet',
+            data: [3, 0, 4, 4, 3],
+            stack: 'female'
+        }];
+
+        var json = {};
+        json.chart = chart;
+        json.title = title;
+        json.xAxis = xAxis;
+        json.yAxis = yAxis;
+        json.tooltip = tooltip;
+        json.plotOptions = plotOptions;
+        json.credits = credits;
+        json.series = series;
+		
+        $.getJSON('http://www.highcharts.com/samples/data/jsonp.php?filename=analytics.csv&callback=?',
+            function (csv) {
+                var data = {
+                    csv: csv
+                };
+                json.data = data;
+                $('#container-hc').highcharts(json);
+            });
+    });
 </script>
 
 {{template "footer.html" .}}
