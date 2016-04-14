@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"strings"
+
 	"github.com/golang/glog"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
@@ -36,7 +38,7 @@ func (c Accounts) JsonData() revel.Result {
 	}
 	results = append(results, total)
 
-	glog.Infof("account total = %v\n", total)
+	//glog.Infof("account total = %v\n", total)
 	return c.RenderJson(results)
 }
 
@@ -44,6 +46,25 @@ func (c Accounts) csvData() revel.Result {
 	kind := c.Params.Get("t")
 	glog.Infof("t=%v\n", kind)
 
+	if strings.EqualFold(kind, "Income") {
+
+	} else if kind == "Expense" {
+
+	} else {
+		glog.Errorf("unknow t = %v\n", kind)
+	}
+
+	results, err := c.Txn.Select(models.Account{},
+		`select * from jzb_accounts`)
+	if err != nil {
+		panic(err)
+	}
+
+	for _, r := range results {
+		account := r.(*models.Account)
+
+	}
+	return c.RenderText("D")
 }
 
 func (c Accounts) Index() revel.Result {

@@ -25,25 +25,36 @@
 <div class="container">
 <table
         data-toggle="table"
-        class="table table-striped table-bordered table-condensed table-responsive"   
+        class="highchart table table-striped table-bordered table-condensed table-responsive"
+        data-graph-container=".container-hctable"
+        data-graph-type="pie"
         data-sort-name="name"
         data-sort-order="desc"
         data-pagination="true"
-        data-page-size="20"
+        data-page-size="48"
         data-page-list="[20, 30, 40, 50]"
         data-show-pagination-switch="true"
         data-search="true"
         data-id-field="id"
         data-url="{{url "Catelogs.JsonData"}}">
+  <caption>饼图</caption>
   <thead>
     <tr>
       <th data-field="Name" data-halign="center" data-align="left" data-sortable="true">{{msg . "name"}}</th>
-      <th data-field="Number" data-halign="center" data-align="left" data-sortable="true">{{msg . "number"}}</th>
-      <th data-field="Balance" data-halign="center" data-align="left" data-sortable="true">{{msg . "amount"}}</th>
+      <th data-field="Number" data-halign="center" data-align="left" data-sortable="true" data-graph-skip="1">{{msg . "number"}}</th>
+      <th data-field="Balance" data-halign="center" data-align="left" data-sortable="true" data-graph-skip="1">{{msg . "amount"}}</th>
       <th data-field="Percent" data-halign="center" data-align="left" data-sortable="true">{{msg . "percent"}}</th>
     </tr>
   </thead>
 </table>
 </div>
+
+<div class="container-hctable"></div>
+
+<script>
+  $(document).ready(setTimeout(function(){
+    $('table.highchart').highchartTable();
+  }, 2000));
+</script>
 
 {{template "footer.html" .}}
