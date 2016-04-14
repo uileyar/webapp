@@ -26,7 +26,22 @@ func (c Accounts) JsonData() revel.Result {
 		panic(err)
 	}
 
+	var total models.Account
+	total.Name = "总计"
+	for _, r := range results {
+		account := r.(*models.Account)
+		total.Income += account.Income
+		total.Expense += account.Expense
+		total.Balance += account.Balance
+	}
+	results = append(results, total)
+
+	glog.Infof("account total = %v\n", total)
 	return c.RenderJson(results)
+}
+
+func (c Accounts) csvData() revel.Result {
+
 }
 
 func (c Accounts) Index() revel.Result {

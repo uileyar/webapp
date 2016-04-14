@@ -5,27 +5,27 @@
 module:testrunner
 module:jobs
 
-GET	    /			                Application.Index
-GET	    /register			        Application.Register
+GET	/			        Application.Index
+GET	/register			        Application.Register
 POST	/register			        Application.SaveUser
-POST	/login			            Application.Login
+POST	/login			        Application.Login
 GET  	/logout		     	        Application.Logout
 
-GET     /accounts                   Accounts.Index
-GET     /accounts/new               Accounts.New
-POST    /accounts/new               Accounts.Save
+GET        /accounts                                       Accounts.Index
+GET        /accounts/new                              Accounts.New
+POST     /accounts/new                               Accounts.Save
 
-GET     /bills                      Bills.Index
+GET       /bills                                                Bills.Index
 
-GET     /catelogs                   Catelogs.Index
-GET     /catelogs/new               Catelogs.New
-POST    /catelogs/new               Catelogs.Save
+GET       /catelogs                                         Catelogs.Index
+GET       /catelogs/new                                Catelogs.New
+POST    /catelogs/new                                Catelogs.Save
 
-GET     /analytics                  Analytics.Index
+GET     /analytics                                         Analytics.Index
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/*filepath           Static.Serve("public")
-GET     /favicon.ico                Static.Serve("public/img","favicon.png")
+GET     /public/*filepath                            Static.Serve("public")
+GET     /favicon.ico                                     Static.Serve("public/img","favicon.png")
 
 # Catch all
-*       /:controller/:action        :controller.:action
+*        /:controller/:action                          :controller.:action
