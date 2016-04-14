@@ -41,6 +41,8 @@ func (c Accounts) JsonData() revel.Result {
 }
 
 func (c Accounts) csvData() revel.Result {
+	kind := c.Params.Get("t")
+	glog.Infof("t=%v\n", kind)
 
 }
 
