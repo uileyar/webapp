@@ -74,7 +74,7 @@ func (c Accounts) CsvData() revel.Result {
 		s[0] = account.Name
 		if kind == "expense" {
 			s[1] = strconv.FormatFloat(float64(-account.Expense), 'f', 0, 32)
-		} else if kind == "income" {
+		} else if kind == "income" && account.Income > 0 {
 			s[1] = strconv.FormatFloat(float64(account.Income), 'f', 0, 32)
 		}
 		w.Write(s)
