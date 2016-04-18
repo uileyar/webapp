@@ -50,8 +50,12 @@
       <div class="col-sm-offset-2 col-sm-10">
         <div class="input-group">
           <span class="input-group-addon">￥</span>
-          <input type="number" step="0.01" class="form-control" name="bill.Amount" value="{{.bill.Amount}}" placeholder={{msg $ "amount"}} required></div>
-      </div>
+	{{if floateq .bill.Amount 0.0}}
+          <input type="number" step="0.01" class="form-control" name="bill.Amount" value="" placeholder={{msg $ "amount"}} required></div>
+      {{else}}
+         <input type="number" step="0.01" class="form-control" name="bill.Amount" value="{{.bill.Amount}}" placeholder={{msg $ "amount"}} required></div>	
+	{{end}}
+	</div>
     </div>
 
     <!-- set account -->

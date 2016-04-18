@@ -20,6 +20,7 @@ func init() {
 	revel.InterceptMethod(Analytics.checkUser, revel.BEFORE)
 	revel.InterceptMethod((*GorpController).Commit, revel.AFTER)
 	revel.InterceptMethod((*GorpController).Rollback, revel.FINALLY)
+	revel.TemplateFuncs["floateq"] = func(a, b float32) bool { return a == b }
 }
 
 func CheckSqlStr(sqlStr string) bool {
