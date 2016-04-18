@@ -48,6 +48,5 @@ delete.failed=%(delete)s%(failed)s
 change.successed=%(change)s%(successed)s
 change.failed=%(change)s%(failed)s
 
-[CN]
 
 

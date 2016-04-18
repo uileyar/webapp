@@ -1,7 +1,9 @@
 package controllers
 
 import (
-	"strings"
+	"bytes"
+	"encoding/csv"
+	"strconv"
 
 	"github.com/golang/glog"
 	"github.com/revel/revel"
@@ -42,17 +44,12 @@ func (c Accounts) JsonData() revel.Result {
 	return c.RenderJson(results)
 }
 
-func (c Accounts) csvData() revel.Result {
+func (c Accounts) CsvData() revel.Result {
 	kind := c.Params.Get("t")
-	glog.Infof("t=%v\n", kind)
-
-	if strings.EqualFold(kind, "Income") {
-
-	} else if kind == "Expense" {
-
-	} else {
-		glog.Errorf("unknow t = %v\n", kind)
+	if len(kind) < 1 {
+		return c.NotFound("404")
 	}
+	//glog.Infof("t=%v\n", kind)
 
 	results, err := c.Txn.Select(models.Account{},
 		`select * from jzb_accounts`)
@@ -60,11 +57,31 @@ func (c Accounts) csvData() revel.Result {
 		panic(err)
 	}
 
-	for _, r := range results {
-		account := r.(*models.Account)
-
+	buf := new(bytes.Buffer)
+	w := csv.NewWriter(buf)
+	s := make([]string, 2)
+	s[0] = c.Message("account")
+	s[1] = c.Message(kind)
+	w.Write(s)
+	if kind != "expense" && kind != "income" {
+		glog.Errorf("unknow t = %v\n", kind)
+		return c.NotFound("404")
 	}
-	return c.RenderText("D")
+
+	for _, r := range results {
+		s := make([]string, 2)
+		account := r.(*models.Account)
+		s[0] = account.Name
+		if kind == "expense" {
+			s[1] = strconv.FormatFloat(float64(-account.Expense), 'f', 0, 32)
+		} else if kind == "income" {
+			s[1] = strconv.FormatFloat(float64(account.Income), 'f', 0, 32)
+		}
+		w.Write(s)
+	}
+	w.Flush()
+	//glog.Infof("buf = %v\n", buf)
+	return c.RenderText(buf.String())
 }
 
 func (c Accounts) Index() revel.Result {
