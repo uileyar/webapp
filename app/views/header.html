@@ -11,9 +11,9 @@
   <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="/public/css/navbar-fixed-top.css">
   {{if eq .title "newbill"}}
-  <link rel="stylesheet" type="text/css" href="/public/css/datetimepicker.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/smalot-bootstrap-datetimepicker/2.3.8/css/bootstrap-datetimepicker.min.css">
   {{end}}
-  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap-table/1.10.0/bootstrap-table.min.css">
 
   <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
   {{range .moreStyles}}
@@ -26,16 +26,18 @@
  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
   <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/locale/bootstrap-table-zh-CN.min.js"></script>
-  <script type="text/javascript" src="/public/js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+  <script src="//cdn.bootcss.com/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
+  <script src="//cdn.bootcss.com/bootstrap-table/1.10.1/locale/bootstrap-table-zh-CN.min.js"></script>
+  <script src="//cdn.bootcss.com/bootstrap-table/1.10.0/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+ <!--script src="/public/js/bootstrap-table/extensions/filter-control/bootstrap-table-filter-control.js"></script-->
 
-  <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-  <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
-  <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/modules/data.js"></script>
-  <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts-plugins/jquery.highchartTable.js"> </script>
+  
+  <script src="//cdn.hcharts.cn/highcharts/highcharts.js"></script>
+  <script src="//cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+  <script src="//cdn.hcharts.cn/highcharts/modules/data.js"></script>
+  <script src="//cdn.hcharts.cn/highcharts-plugins/jquery.highchartTable.js"> </script>
 
 </head>
 <body>

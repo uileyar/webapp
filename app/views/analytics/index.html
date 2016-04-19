@@ -10,71 +10,30 @@
   </div>
 </div>
 
-<div id="main">
-    <div class="container">
-        <div id="wrap" class="sidebar-wrapper">
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 sidebar-eq"></div>
-            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 sidebar-eq-fill"></div>
-            <div class="clearfix"></div>
-        </div>
+<ul id="myTabs" class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#bills" role="tab" id="home-tab" data-toggle="tab">{{msg . "bills.analytics"}}</a>
+    </li>
+    <li role="presentation">
+        <a href="#catelog" role="tab" id="profile-tab" data-toggle="tab">{{msg . "catelog.analytics"}}</a>
+    </li>
+</ul>
+
+<div id="myTabContent" class="tab-content">
+    <div role="tabpanel" class="col-sm-offset-1 col-lg-10 col-md-11 col-sm-11 col-xs-12 tab-pane fade active in" id="bills">
+        <div id="container-ae" ></div>
+        <div id="container-ai" ></div>
+    </div>
+    <div role="tabpanel" class="col-sm-offset-1 col-lg-10 col-md-11 col-sm-11 col-xs-12 tab-pane fade" id="catelog">
+
     </div>
 </div>
 
-<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+
+<script src="http://cdn.hcharts.cn/highcharts/themes/grid-light.js"></script>
+<script src="/public/js/analytics.js"></script>
+
 <script language="JavaScript">
-$(document).ready(function() {  
-   var chart = {
-      type: 'column'
-   };
-   var title = {
-      text: 'Total fruit consumption, grouped by gender'   
-   };    
-   var xAxis = {
-      categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
-   };
-   var yAxis ={
-      allowDecimals: false,
-      min: 0,
-      title: {
-        text: 'Number of fruits'
-      }     
-   }; 
-   var plotOptions = {
-      column: {
-         stacking: 'normal'        
-      }
-   };
-   var credits = {
-      enabled: false
-   };
-   var series= [{
-          name: 'John',
-            data: [5, 3, 4, 7, 2],
-            stack: 'male'
-        }, {
-            name: 'Joe',
-            data: [3, 4, 4, 2, 5],
-            stack: 'male'
-        }, {
-            name: 'Jane',
-            data: [2, 5, 6, 2, 1],
-            stack: 'female'
-        }, {
-            name: 'Janet',
-            data: [3, 0, 4, 4, 3],
-            stack: 'female'
-   }];     
-      
-   var json = {};   
-   json.chart = chart; 
-   json.title = title;   
-   json.xAxis = xAxis;
-   json.yAxis = yAxis;  
-   json.plotOptions = plotOptions;
-   json.credits = credits;
-   json.series = series;
-   $('#container').highcharts(json);
-  
-});
+
 </script>
 {{template "footer.html" .}}

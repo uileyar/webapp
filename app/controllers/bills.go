@@ -51,11 +51,12 @@ func (c Bills) Delete() revel.Result {
 	body := fmt.Sprintf("%v%v%v %v:%v; %v:￥%v; %v:%v; %v:%v", c.connected().Name, c.Message("delete"), c.Message(bill.Kind),
 		c.Message("date"), bill.Date.Format("2006-01-02"), c.Message("amount"), amount,
 		c.Message("title"), bill.Title, c.Message("description"), bill.Description)
-
-	jobs.Now(models.SendConfirmationEmail{
-		Subject: subject,
-		Body:    body,
-	})
+	if !revel.Config.BoolDefault("mode.dev", false) {
+		jobs.Now(models.SendConfirmationEmail{
+			Subject: subject,
+			Body:    body,
+		})
+	}
 
 	return c.RenderText("ok")
 }

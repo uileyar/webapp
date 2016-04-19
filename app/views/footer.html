@@ -3,11 +3,10 @@
   {{end}}
 
   {{if eq .title "newbill"}}
-  <script type="text/javascript" src="/public/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"
-          charset="UTF-8"></script>
-  <script type="text/javascript" src="/public/js/bootstrap-datetimepicker/locales/bootstrap-datetimepicker.zh-CN.js"
-          charset="UTF-8"></script>
-  <script type="text/javascript">
+  <script src="//cdn.bootcss.com/smalot-bootstrap-datetimepicker/2.3.8/js/bootstrap-datetimepicker.min.js" ></script>
+  <script src="//cdn.bootcss.com/smalot-bootstrap-datetimepicker/2.3.8/js/locales/bootstrap-datetimepicker.zh-CN.js" ></script>
+ 
+<script type="text/javascript">
       $('.form_date').datetimepicker({
           language: 'zh-CN',
           format: "yyyy-mm-dd",

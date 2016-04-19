@@ -2,6 +2,8 @@ package controllers
 
 import (
 	//"github.com/golang/glog"
+
+	//. "github.com/aerospike/aerospike-client-go"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
 	"github.com/uileyar/webapp/app/routes"
@@ -27,6 +29,14 @@ func (c Analytics) JsonData() revel.Result {
 	}
 
 	return c.RenderJson(results)
+}
+
+func (c Analytics) Bills() revel.Result {
+	return c.Redirect(routes.Bills.Index())
+}
+
+func (c Analytics) Catelogs() revel.Result {
+	return c.Redirect(routes.Catelogs.Index())
 }
 
 func (c Analytics) Index() revel.Result {
