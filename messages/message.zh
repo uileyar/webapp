@@ -47,6 +47,7 @@ continue=继续
 and=并
 
 bills.analytics=%(bills)s%(analytics)s
+account.analytics=%(account)s%(analytics)s
 catelog.analytics=%(catelog)s%(analytics)s
 
 save.and.continue=%(save)s%(and)s%(continue)s

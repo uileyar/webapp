@@ -12,28 +12,55 @@
 
 <ul id="myTabs" class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active">
-        <a href="#bills" role="tab" id="home-tab" data-toggle="tab">{{msg . "bills.analytics"}}</a>
+        <a href="#bills" role="tab" id="bills-tab" data-toggle="tab">{{msg . "bills.analytics"}}</a>
+    </li>
+	<li role="presentation">
+        <a href="#account" role="tab" id="account-tab" data-toggle="tab">{{msg . "account.analytics"}}</a>
     </li>
     <li role="presentation">
-        <a href="#catelog" role="tab" id="profile-tab" data-toggle="tab">{{msg . "catelog.analytics"}}</a>
+        <a href="#catelog" role="tab" id="catelog-tab" data-toggle="tab">{{msg . "catelog.analytics"}}</a>
     </li>
 </ul>
 
 <div id="myTabContent" class="tab-content">
     <div role="tabpanel" class="col-sm-offset-1 col-lg-10 col-md-11 col-sm-11 col-xs-12 tab-pane fade active in" id="bills">
-        <div id="container-ae" ></div>
+        <div id="container-bm" ></div>
+        <div id="container-by" ></div>
+    </div>
+	<div role="tabpanel" class="col-sm-offset-1 col-lg-10 col-md-11 col-sm-11 col-xs-12 tab-pane fade" id="account">
+	    <div id="container-ae" ></div>
         <div id="container-ai" ></div>
     </div>
     <div role="tabpanel" class="col-sm-offset-1 col-lg-10 col-md-11 col-sm-11 col-xs-12 tab-pane fade" id="catelog">
-
     </div>
 </div>
 
 
-<script src="http://cdn.hcharts.cn/highcharts/themes/grid-light.js"></script>
+<script src="//cdn.bootcss.com/highcharts/4.2.3/themes/grid-light.js"></script>
 <script src="/public/js/analytics.js"></script>
 
 <script language="JavaScript">
+    Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+        return {
+            radialGradient: {cx: 0.5, cy: 0.3, r: 0.7},
+            stops: [
+                [0, color],
+                [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+            ]
+        };
+    });
+
+    $('#myTabs a').(function (e) {
+        alert("ssssssssssss")
+    })
+
+    $('#myTabs a').click(function (e) {
+        var tab_id = e.currentTarget.id;
+        e.preventDefault();
+        $(this).tab('show');
+        get_highcharts(tab_id);
+
+    })
 
 </script>
 {{template "footer.html" .}}
