@@ -23,6 +23,12 @@ func init() {
 	revel.TemplateFuncs["floateq"] = func(a, b float32) bool { return a == b }
 }
 
+func panicOnError(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
 func CheckSqlStr(sqlStr string) bool {
 	str := `(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|(\b(select|update|and|or|delete|insert|trancate|char|chr|into|substr|ascii|declare|exec|count|master|into|drop|execute)\b)`
 	re, err := regexp.Compile(str)

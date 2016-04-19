@@ -120,9 +120,8 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 	}
 
 	status := "add"
-	if id := c.Request.FormValue("bill"); len(id) > 0 {
+	if len(bill.Bill_id) > 0 {
 		status = "change"
-		bill.Bill_id = id
 		if _, err := c.Txn.Update(&bill); err != nil {
 			panic(err)
 		}
@@ -145,13 +144,20 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 		c.Message("account"), account, c.Message("catelog"), catelog,
 		c.Message("title"), bill.Title, c.Message("description"), bill.Description)
 
-	jobs.Now(models.SendConfirmationEmail{
-		Subject: subject,
-		Body:    body,
-	})
+	if !revel.Config.BoolDefault("mode.dev", false) {
+		jobs.Now(models.SendConfirmationEmail{
+			Subject: subject,
+			Body:    body,
+		})
+	}
 
 	c.Flash.Success("%v %v %v %v%v %v!", c.Message(status), bill.Title, c.Message(bill.Kind), "￥", bill.Amount, c.Message("successed"))
-	return c.Redirect(routes.Bills.Index())
+
+	if st := c.Params.Get("st"); st == "con" {
+		return c.Redirect(routes.Bills.New())
+	} else {
+		return c.Redirect(routes.Bills.Index())
+	}
 }
 
 func (c Bills) Validate(bill models.Bill) {

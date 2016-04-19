@@ -7,7 +7,7 @@
   </div>
 </div>
 
-<form class="form-horizontal" role="form" action="{{url "Bills.Save" .bill.Bill_id}}" method="POST">
+<form class="form-horizontal" role="form" action="{{url "Bills.Save"}}" onsubmit="return checkInfo();" method="POST">
   <fieldset>
 
     <legend>
@@ -101,11 +101,28 @@
     <!-- set buttons -->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-4">
-        <button class="btn btn-primary" type="submit">{{msg . "ok"}}</button>
+        <input type="hidden" name="bill.Bill_id" value="{{.bill.Bill_id}}">
+        <input type="hidden" name="st" id="sub-type" value="">
+        <button class="btn btn-primary" id="sub-type-save" type="submit">{{msg . "save"}}</button>
+        <button class="btn btn-primary" id="sub-type-con" type="submit">{{msg . "save.and.continue"}}</button>
         <a role="button" class="btn btn-info" href="{{url "Bills.Index"}}">{{msg . "cancel"}}</a>
       </div>
     </div>
 
   </fieldset>
 </form>
+
+<script type="text/javascript">
+    function checkInfo() {
+        //url="{{url "Bills.Save" .bill.Bill_id}}"
+
+        if (document.activeElement.id == 'sub-type-save') {
+            document.getElementById("sub-type").value = "save";
+        } else if (document.activeElement.id == 'sub-type-con') {
+            document.getElementById("sub-type").value = "con";
+        }
+        return true;
+    }
+</script>
+
 {{template "footer.html" .}}
