@@ -2,7 +2,6 @@ package controllers
 
 import (
 	//"github.com/golang/glog"
-
 	//. "github.com/aerospike/aerospike-client-go"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"

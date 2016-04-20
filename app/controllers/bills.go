@@ -5,6 +5,7 @@ import (
 	"time"
 
 	//"github.com/golang/glog"
+	"github.com/golang/glog"
 	"github.com/revel/modules/jobs/app/jobs"
 	"github.com/revel/revel"
 	"github.com/uileyar/webapp/app/models"
@@ -13,6 +14,38 @@ import (
 
 type Bills struct {
 	Application
+}
+
+func (c Bills) Validate(bill models.Bill) {
+	c.Validation.Check(bill.Amount,
+		revel.Required{},
+	).Message(c.Message("bill.amount.require"))
+
+	c.Validation.Check(bill.Title,
+		revel.Required{},
+		revel.MaxSize{50 * 3},
+	).Message(c.Message("bill.title.maxsize"))
+
+	c.Validation.Check(bill.Description,
+		revel.MaxSize{1000 * 3},
+	).Message(c.Message("bill.description.maxsize"))
+
+	c.Validation.Check(bill.Date,
+		revel.Required{},
+	).Message(c.Message("bill.date.require"))
+
+	c.Validation.Check(bill.Catelog_id,
+		revel.Required{},
+	).Message(c.Message("bill.catelog.require"))
+
+	c.Validation.Check(bill.Account_id,
+		revel.Required{},
+	).Message(c.Message("bill.account.require"))
+
+	c.Validation.Check(bill.Kind,
+		revel.Required{},
+		revel.MaxSize{10 * 3},
+	).Message(c.Message("bill.kind.require"))
 }
 
 func (c Bills) checkUser() revel.Result {
@@ -161,35 +194,27 @@ func (c Bills) Save(bill models.Bill) revel.Result {
 	}
 }
 
-func (c Bills) Validate(bill models.Bill) {
-	c.Validation.Check(bill.Amount,
-		revel.Required{},
-	).Message(c.Message("bill.amount.require"))
+type Serie struct {
+	Name string
+	Data []float32
+}
 
-	c.Validation.Check(bill.Title,
-		revel.Required{},
-		revel.MaxSize{50 * 3},
-	).Message(c.Message("bill.title.maxsize"))
+type BillsJsonData struct {
+	Categories []string
+	Series     []Serie
+}
 
-	c.Validation.Check(bill.Description,
-		revel.MaxSize{1000 * 3},
-	).Message(c.Message("bill.description.maxsize"))
+func (c Bills) JsonData() revel.Result {
+	t := c.Params.Get("t")
+	if len(t) < 1 {
+		return c.NotFound("404")
+	}
+	glog.Infof("t=%v\n", t)
 
-	c.Validation.Check(bill.Date,
-		revel.Required{},
-	).Message(c.Message("bill.date.require"))
+	results, err := c.Txn.Exec(
+		`SELECT month,SUM(amount) FROM jzb_bills where kind = "income" GROUP BY month`)
+	panicOnError(err)
+	glog.Infof("%v\n", results)
 
-	c.Validation.Check(bill.Catelog_id,
-		revel.Required{},
-	).Message(c.Message("bill.catelog.require"))
-
-	c.Validation.Check(bill.Account_id,
-		revel.Required{},
-	).Message(c.Message("bill.account.require"))
-
-	c.Validation.Check(bill.Kind,
-		revel.Required{},
-		revel.MaxSize{10 * 3},
-	).Message(c.Message("bill.kind.require"))
-
+	return c.RenderJson(results)
 }
