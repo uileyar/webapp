@@ -87,8 +87,14 @@ var get_bills_hc = function () {
                 text: '月汇总'
             },
             xAxis: {
-                categories: data.categories
+                //categories: data.categories,
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%e. %b',
+                    year: '%b'
+                }
             },
+
             yAxis: {
                 title: {
                     text: '金额 (￥)'

@@ -204,6 +204,11 @@ type BillsJsonData struct {
 	Series     []Serie
 }
 
+type billResult struct {
+	Month string  `db:"month"`
+	Money float32 `db:"SUM(amount)"`
+}
+
 func (c Bills) JsonData() revel.Result {
 	t := c.Params.Get("t")
 	if len(t) < 1 {
@@ -211,10 +216,31 @@ func (c Bills) JsonData() revel.Result {
 	}
 	glog.Infof("t=%v\n", t)
 
-	results, err := c.Txn.Exec(
+	var bjd BillsJsonData
+	catelogs := map[string]int{}
+
+	incomeResults, err := c.Txn.Select(billResult{},
 		`SELECT month,SUM(amount) FROM jzb_bills where kind = "income" GROUP BY month`)
 	panicOnError(err)
-	glog.Infof("%v\n", results)
 
-	return c.RenderJson(results)
+	expenseResults, err := c.Txn.Select(billResult{},
+		`SELECT month,SUM(amount) FROM jzb_bills where kind = "expense" GROUP BY month`)
+	panicOnError(err)
+
+	balanceResults, err := c.Txn.Select(billResult{},
+		`SELECT month,SUM(amount) FROM jzb_bills GROUP BY month`)
+	panicOnError(err)
+
+	for _, r := range incomeResults {
+		b := r.(*billResult)
+		catelogs[b.Month] = 1
+	}
+
+	for _, r := range expenseResults {
+		b := r.(*billResult)
+		catelogs[b.Month] = 1
+	}
+	glog.Infof("catelogs = %v\n", catelogs)
+	glog.Infof("balanceResults = %v\n", balanceResults)
+	return c.RenderJson(bjd)
 }
